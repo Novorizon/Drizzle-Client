@@ -4,6 +4,7 @@ using PureMVC.Patterns.Proxy;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using UnityEngine;
 
 namespace Game
@@ -25,6 +26,7 @@ namespace Game
         public override void OnRegister()
         {
             Init();
+            //Register();
         }
 
         public override void OnRemove()
@@ -32,7 +34,7 @@ namespace Game
         }
 
 
-        public  void Init()
+        public void Init()
         {
             name = "Test.db";
             path = "";
@@ -70,6 +72,32 @@ namespace Game
 
         }
 
+        public void Register()
+        {
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
+            var assembly = Assembly.Load("Assembly-CSharp");
+            try
+            {
+                var assemblyTypes = assembly.GetTypes();
+                for (int i = 0; i < assemblyTypes.Length; i++)
+                {
+                    var type = assemblyTypes[i];
+                    TableAccessAttribute a = Attribute.GetCustomAttribute(assemblyTypes[i], typeof(TableAccessAttribute)) as TableAccessAttribute;
+                    if (a != null)
+                    {
+                        RegisterTable(type, a.type);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+            }
+
+            sw.Stop();
+            Debug.LogError("用时：" + sw.ElapsedMilliseconds + "");
+        }
+
         public void RegisterTable<T>(AccessType type = AccessType.Immediately) where T : TableAccess, new()
         {
             if (accessors == null || accessorTypes == null || accessors.ContainsKey(typeof(T)))
@@ -83,6 +111,19 @@ namespace Game
             if (!accessorTypes.ContainsKey(accessor.DataType))
                 accessorTypes.Add(accessor.DataType, typeof(T));
         }
+        public void RegisterTable(Type type, AccessType accessType = AccessType.Immediately)
+        {
+            if (accessors == null || accessorTypes == null || accessors.ContainsKey(type))
+                return;
+
+            TableAccess accessor = Activator.CreateInstance(type) as TableAccess;//创建该类型的实例
+            accessor.Type = accessType;
+            accessors.Add(type, accessor);
+
+            if (!accessorTypes.ContainsKey(type))
+                accessorTypes.Add(accessor.DataType, type);
+        }
+
 
         public bool Load()
         {
