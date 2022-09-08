@@ -1,17 +1,26 @@
+using MVC;
 using UnityEngine.InputSystem.EnhancedTouch;
 
 namespace Game.Input
 {
     public static class GameInput
     {
-        //[DomainReload]
-        public static GameControls Controller { get; private set; }
+        [DomainReload]
+        private static GameControls _ctrl;
+
+        public static GameControls Controller
+        {
+            get
+            {
+                if (_ctrl == null)
+                    _ctrl = new GameControls();
+
+                return _ctrl;
+            }
+        }
 
         public static void Enable()
         {
-            if (Controller == null)
-                Controller = new GameControls();
-
             Controller.Enable();
         }
 

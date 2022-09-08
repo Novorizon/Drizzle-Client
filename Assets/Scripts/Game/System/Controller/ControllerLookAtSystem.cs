@@ -8,13 +8,13 @@ namespace Game
     /// <summary>
     /// 角色面向鼠标所指的方向
     /// </summary>
-    public class ControllerLookAtSystem : ComponentSystem<Position, MoveDirection, FaceDirection, PlayerController>
+    public class ControllerLookAtSystem : SystemBase<Position, MoveDirection, FaceDirection, PlayerController>
     {
         private Vector2 inputValue;
 
-        public override void OnInitialized()
+        protected override void OnCreate()
         {
-            base.OnInitialized();
+            base.OnCreate();
 
 #if UNITY_STANDALONE_WIN || UNITY_STANDALONE_OSX || UNITY_EDITOR
             GameInput.Controller.Default.MousePosition.performed += OnMouseMove;

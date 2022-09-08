@@ -38,7 +38,7 @@ namespace Game
         Pickup = 4,
         Follow =5
     }
-    public class EntityLayer : IComponent
+    public class EntityLayer : IComponentData
     {
         public EntityLayerMask Value;
 
@@ -49,7 +49,7 @@ namespace Game
     }
 
 
-    public class Relationship : IComponent
+    public class Relationship : IComponentData
     {
         public RelationshipLayer Value;
     }

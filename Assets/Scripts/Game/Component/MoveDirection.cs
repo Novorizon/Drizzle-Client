@@ -5,13 +5,13 @@ using Unity.Mathematics;
 namespace Game
 {
     [Serializable]
-    public class MoveDirection : IComponent
+    public class MoveDirection : IComponentData
     {
         public float3 Value;
     }
 
     [Serializable]
-    public struct Toward : IComponent
+    public struct Toward : IComponentData
     {
         public float3 Value;
     }

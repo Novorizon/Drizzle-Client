@@ -10,7 +10,7 @@ namespace Game
         Pickup = 3,
         Follow = 4,
     }
-    public class Interactive : IComponent
+    public class Interactive : IComponentData
     {
         public InteractLayer Value;
         public bool IsSelected { get; set; }

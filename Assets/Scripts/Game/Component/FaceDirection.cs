@@ -5,7 +5,7 @@ using ECS;
 namespace Game
 {
     [Serializable]
-    public class FaceDirection : IComponent
+    public class FaceDirection : IComponentData
     {
         public float3 Value;
     }

@@ -6,21 +6,24 @@ using UnityEngine.InputSystem;
 
 namespace Game
 {
-    public class ControllerMoveSystem : ComponentSystem<MoveDirection, FaceDirection, PlayerController>
+    public class ControllerMoveSystem : SystemBase<MoveDirection, FaceDirection, PlayerController>
     {
         private Vector3 inputValue;
 
-        public override void OnInitialized()
+        protected override void OnCreate()
         {
-            base.OnInitialized();
+            base.OnCreate();
 
-#if UNITY_STANDALONE_WIN || UNITY_STANDALONE_OSX || UNITY_EDITOR
-            GameInput.Controller.Default.Move.performed += OnMove;
-            GameInput.Controller.Default.Move.canceled += OnMove;
-#elif UNITY_ANDROID || UNITY_IOS
-            GameInput.Controller.Default.VirtualPadLeft.performed += OnMove;
-            GameInput.Controller.Default.VirtualPadLeft.canceled += OnMove;
-#endif
+            if (Application.isMobilePlatform)
+            {
+                GameInput.Controller.Default.VirtualPadLeft.performed += OnMove;
+                GameInput.Controller.Default.VirtualPadLeft.canceled += OnMove;
+            }
+            else
+            {
+                GameInput.Controller.Default.Move.performed += OnMove;
+                GameInput.Controller.Default.Move.canceled += OnMove;
+            }
         }
 
 

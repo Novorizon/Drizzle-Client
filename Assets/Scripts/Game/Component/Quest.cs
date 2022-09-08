@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Game
 {
-    public class Quest : IComponent
+    public class Quest : IComponentData
     {
         public int id;
         public string name;

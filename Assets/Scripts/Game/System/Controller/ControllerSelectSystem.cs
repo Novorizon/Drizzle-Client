@@ -14,28 +14,31 @@ namespace Game
         PressCancel,
         Move
     }
-    public class ControllerSelectSystem : ComponentSystem<PlayerController>
+    public class ControllerSelectSystem : SystemBase<PlayerController>
     {
-        ControllerType controller;
+        //ControllerType controller;
         private float inputValue;
 
-        public override void OnInitialized()
+        protected override void OnCreate()
         {
-            base.OnInitialized();
+            base.OnCreate();
 
-#if UNITY_STANDALONE_WIN || UNITY_STANDALONE_OSX || UNITY_EDITOR
-            GameInput.Controller.Default.Press.started -= PressStart;
-            GameInput.Controller.Default.Press.canceled += PressCancel;
-#elif UNITY_ANDROID || UNITY_IOS
-            GameInput.Controller.Default.VirtualPadLeft.performed += PressStart;
-            GameInput.Controller.Default.VirtualPadLeft.canceled += PressCancel;
-#endif
+            if (Application.isMobilePlatform)
+            {
+                GameInput.Controller.Default.VirtualPadLeft.performed += PressStart;
+                GameInput.Controller.Default.VirtualPadLeft.canceled += PressCancel;
+            }
+            else
+            {
+                GameInput.Controller.Default.Press.started -= PressStart;
+                GameInput.Controller.Default.Press.canceled += PressCancel;
+            }
         }
 
         private void PressStart(InputAction.CallbackContext context)
         {
             inputValue = context.ReadValue<float>();
-            controller = ControllerType.PressStart;
+            //controller = ControllerType.PressStart;
         }
 
         private void PressCancel(InputAction.CallbackContext context)
@@ -51,15 +54,15 @@ namespace Game
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit))
             {
-                EntityManager.Instance.TryGetEntity(hit.collider.gameObject, out Entity target);
+                EntityManager.TryGetEntity(hit.collider.gameObject, out Entity target);
                 if (target == null)
                     return;
 
-                if (!EntityManager.Instance.HasComponent<EntityLayer>(target))
-                    return;
+                //if (!EntityManager.HasComponent<EntityLayer>(target))
+                //    return;
 
 
-                EntityLayer layer = EntityManager.Instance.GetComponent<EntityLayer>(target);
+                EntityLayer layer = EntityManager.GetComponentData<EntityLayer>(target);
 
                 if (layer.Has(EntityLayerMask.Player))
                 {

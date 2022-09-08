@@ -52,7 +52,7 @@ namespace Game
                     int id = 1;
                     //生成任务entity 用于任务系统更新状态
                     Entity questEntity = EntityManager.Create();
-                    Quest quest = EntityManager.Instance.AddComponentData<Quest>(questEntity);
+                    Quest quest = EntityManager.AddComponentData<Quest>(questEntity);
                     quest.id = id;
                     quest.state = QuestState.Start;
                     quest.stage = 0;

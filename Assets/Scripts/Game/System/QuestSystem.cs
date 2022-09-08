@@ -1,11 +1,27 @@
 using DataBase;
 using ECS;
+using PureMVC.Interfaces;
+using PureMVC.Patterns.Facade;
 using System.Collections.Generic;
 using UnityEngine;
 namespace Game
 {
-    public class QuestSystem : ComponentSystem<Quest>
+    public class QuestSystem : SystemBase<Quest>
     {
+        //public void SendNotification(string notificationName, object body = null, string type = null)
+        //{
+        //    Facade.SendNotification(notificationName, body, type);
+        //}
+
+        protected IFacade Facade
+        {
+            get
+            {
+                return PureMVC.Patterns.Facade.Facade.GetInstance(() => new PureMVC.Patterns.Facade.Facade());
+            }
+        }
+
+
         protected override void OnUpdate(int index, Entity entity, Quest quest)
         {
             ItemProxy proxy = Facade.RetrieveProxy(ItemProxy.NAME) as ItemProxy;
@@ -43,12 +59,12 @@ namespace Game
             }
             else if (quest.state == QuestState.Abort)
             {
-                EntityManager.Instance.DestroyEntity(entity);
+                EntityManager.DestroyEntity(entity);
 
             }
             else if (quest.state == QuestState.Reward)
             {
-                EntityManager.Instance.DestroyEntity(entity);
+                EntityManager.DestroyEntity(entity);
             }
         }
 

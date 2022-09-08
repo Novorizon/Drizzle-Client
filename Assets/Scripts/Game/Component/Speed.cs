@@ -4,7 +4,7 @@ using System;
 namespace Game
 {
     [Serializable]
-    public class Speed : IComponent
+    public class Speed : IComponentData
     {
         public float Value;
         //public AttributeParam Value;

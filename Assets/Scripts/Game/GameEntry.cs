@@ -24,10 +24,7 @@ namespace Game
             GameInput.Enable();
             MainCamera.Init();
             UIManager.Instance.GetCamera(0);
-            // 缓存类型 
-            ReferencePool.Instance.LoadTypes("MVC");
-            ReferencePool.Instance.LoadTypes("ECS");
-            ReferencePool.Instance.LoadTypes("Assembly-CSharp");
+
             staticPanel.initEndCallback = OnStart;
 
 
@@ -82,6 +79,8 @@ namespace Game
             Facade.RegisterCommand(LoadSceneCommand.NAME, () => new LoadSceneCommand());
             Facade.RegisterCommand(LoadHeroCommand.NAME, () => new LoadHeroCommand());
             Facade.RegisterCommand(LoadNPCCommand.NAME, () => new LoadNPCCommand());
+
+            SendNotification(LoadHeroCommand.NAME);
         }
 
         protected override void InitializeProxy()
@@ -99,27 +98,6 @@ namespace Game
             netProxy.Start();
         }
 
-        protected override void InitializeSystem()
-        {
-            WorldManager.Instance.Initialize();
-
-            World.Self.Initialize();
-            //SendNotification(ILRuntimeMediator.CMD_IL_GAME_START);
-            World.Self.RegisterSystem<ControllerMoveSystem>();
-            World.Self.RegisterSystem<ControllerLookAtSystem>();
-            World.Self.RegisterSystem<ControllerSelectSystem>();
-            World.Self.RegisterSystem<FollowCameraRollSystem>();
-            World.Self.RegisterSystem<FaceForwardSystem>();
-            World.Self.RegisterSystem<PlayerMoveSystem>();
-            World.Self.RegisterSystem<TRSToLocalToWorldSystem>();
-            World.Self.RegisterSystem<CopyToTransformSystem>();
-            //World.Self.RegisterSystem<CopyFromTransformSystem>();
-
-            ////logic system
-            //World.Self.RegisterSystem<PathDrawSystem>();
-
-            ////view system
-            //World.Self.RegisterSystem<CreateBulletSystem>();
-        }
+       
     }
 }

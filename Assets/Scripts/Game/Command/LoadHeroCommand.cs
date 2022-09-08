@@ -46,36 +46,50 @@ namespace Game
             ModelData model = tableProxy.GetData<ModelData>(data.modelId);
             if (model == null)
                 return;
-            ResourceManager.Instance.LoadAssetAsync<GameObject>(model.name, (asset, _) =>
+
+            EntityArchetype entityArchetype = new EntityArchetype(
+                typeof(LocalToWorld),
+                typeof(Position),
+                typeof(Rotation),
+                typeof(Scale),
+                typeof(CopyTransformFromGameObject),
+                typeof(Speed),
+                typeof(MoveDirection),
+                typeof(FaceDirection),
+                typeof(PlayerController)
+                );
+
+            Entity hero = EntityManager.Create();
+
+            EntityManager.AddComponentData<CopyInitialTransformFromGameObject>(hero);
+            EntityManager.AddComponentData<CopyTransformToGameObject>(hero);
+            EntityManager.AddComponentData<LocalToWorld>(hero);
+            EntityManager.AddComponentData<Position>(hero).Value = data.position;
+            EntityManager.AddComponentData<Rotation>(hero).Value = Quaternion.identity;
+            EntityManager.AddComponentData<Scale>(hero).Value = Vector3.one;
+
+            EntityManager.AddComponentData<Speed>(hero).Value = data.speed * 10;
+            EntityManager.AddComponentData<MoveDirection>(hero).Value = Vector3.zero;
+            EntityManager.AddComponentData<FaceDirection>(hero).Value = Vector3.forward;// data.forward;
+
+            EntityManager.AddComponentData<PlayerController>(hero);
+            //Debug.LogError(asset.name);
+
+
+            EntityManager.LoadGameObject(hero, model.name, data.position, Quaternion.identity, (e, _) =>
             {
-                GameObject go = GameObject.Instantiate(asset);
-
-                go.transform.position = data.position;
-                go.transform.forward = data.forward;
-
-                Entity hero = EntityManager.Create(go);
-                EntityManager.Instance.AddComponentData<LocalToWorld>(hero);
-                EntityManager.Instance.AddComponentData<Position>(hero).Value = data.position;
-                EntityManager.Instance.AddComponentData<Rotation>(hero).Value = Quaternion.identity;
-                EntityManager.Instance.AddComponentData<Scale>(hero).Value = Vector3.one;
-                EntityManager.Instance.AddComponentData<CopyToTransformComponent>(hero);
-
-                EntityManager.Instance.AddComponentData<Speed>(hero).Value = data.speed*10;
-                EntityManager.Instance.AddComponentData<MoveDirection>(hero).Value =Vector3.zero;
-                EntityManager.Instance.AddComponentData<FaceDirection>(hero).Value = Vector3.forward;// data.forward;
-
-                EntityManager.Instance.AddComponentData<PlayerController>(hero);
-                //Debug.LogError(asset.name);
-
+                //EntityManager.AddComponentData<PlayerController>(hero);
 
                 var VirtualCamera = GameObject.FindObjectOfType<CinemachineVirtualCamera>();
                 if (VirtualCamera != null)
                 {
-                    VirtualCamera.Follow = go.transform;
-                    VirtualCamera.LookAt = go.transform;
+                    VirtualCamera.Follow = e.gameObject.transform;
+                    VirtualCamera.LookAt = e.gameObject.transform;
                 }
-                //SendNotification();//装备
             });
+
+                //SendNotification();//装备
+
 
 
 

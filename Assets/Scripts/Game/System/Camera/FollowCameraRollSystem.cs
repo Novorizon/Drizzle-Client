@@ -4,19 +4,21 @@ using Game.Input;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.Scripting;
 
 namespace Game
 {
-    public class FollowCameraRollSystem : ComponentSystem<VirtualCamera, RollSensitivity>
+    [Preserve]
+    public class FollowCameraRollSystem : SystemBase<VirtualCamera, RollSensitivity>
     {
         private Vector2 rollDelta;
         private bool isPressed;
 
         private CinemachineBrain brain;
 
-        public override void OnInitialized()
+        protected override void OnCreate()
         {
-            base.OnInitialized();
+            base.OnCreate();
 
 #if UNITY_STANDALONE_WIN || UNITY_STANDALONE_OSX || UNITY_EDITOR
             GameInput.Controller.Default.Look.performed += OnLook;

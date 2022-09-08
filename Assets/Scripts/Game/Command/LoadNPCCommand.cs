@@ -34,18 +34,18 @@ namespace Game
                 go.transform.forward = Vector3.forward;
 
                 Entity hero = EntityManager.Create(go);
-                EntityManager.Instance.AddComponentData<LocalToWorld>(hero);
-                EntityManager.Instance.AddComponentData<Position>(hero).Value = go.transform.position;
-                EntityManager.Instance.AddComponentData<Rotation>(hero).Value = Quaternion.identity;
-                EntityManager.Instance.AddComponentData<Scale>(hero).Value = Vector3.one;
-                EntityManager.Instance.AddComponentData<CopyToTransformComponent>(hero);
+                EntityManager.AddComponentData<LocalToWorld>(hero);
+                EntityManager.AddComponentData<Position>(hero).Value = go.transform.position;
+                EntityManager.AddComponentData<Rotation>(hero).Value = Quaternion.identity;
+                EntityManager.AddComponentData<Scale>(hero).Value = Vector3.one;
+                EntityManager.AddComponentData<CopyToTransformComponent>(hero);
 
-                EntityManager.Instance.AddComponentData<Speed>(hero).Value = 0;
-                EntityManager.Instance.AddComponentData<MoveDirection>(hero).Value =Vector3.forward;
-                EntityManager.Instance.AddComponentData<FaceDirection>(hero).Value = Vector3.forward;
+                EntityManager.AddComponentData<Speed>(hero).Value = 0;
+                EntityManager.AddComponentData<MoveDirection>(hero).Value =Vector3.forward;
+                EntityManager.AddComponentData<FaceDirection>(hero).Value = Vector3.forward;
 
-                EntityManager.Instance.AddComponentData<EntityLayer>(hero).Value= EntityLayerMask.Npc| EntityLayerMask.Friend| EntityLayerMask.Interactive| EntityLayerMask.Select;
-                EntityManager.Instance.AddComponentData<Selected>(hero);
+                EntityManager.AddComponentData<EntityLayer>(hero).Value= EntityLayerMask.Npc| EntityLayerMask.Friend| EntityLayerMask.Interactive| EntityLayerMask.Select;
+                EntityManager.AddComponentData<Selected>(hero);
                 //Debug.LogError(asset.name);
 
             });

@@ -2,7 +2,7 @@ using ECS;
 
 namespace Game
 {
-    public class Pickup : IComponent
+    public class Pickup : IComponentData
     {
         public Entity source;
     }

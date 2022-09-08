@@ -23,7 +23,7 @@ namespace Game
             messageProxy = Facade.RetrieveProxy(MessageProxy.NAME) as MessageProxy;
             handlerProxy = Facade.RetrieveProxy(HandlerProxy.NAME) as HandlerProxy;
 
-            handlerProxy.RegisterHandler(typeof(S2C_LoginAck), HandleLoginAck);
+            handlerProxy.RegisterHandler(typeof(S2C_Login_Ack), HandleLoginAck);
         }
 
         public override void OnRemove()

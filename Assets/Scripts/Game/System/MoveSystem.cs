@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Game
 {
 
-    public class MoveSystem : ComponentSystem<LocalToWorld, Velocity, MoveDirection, FaceDirection, Speed>
+    public class MoveSystem : SystemBase<LocalToWorld, Velocity, MoveDirection, FaceDirection, Speed>
     {
         public readonly List<Vector3> paths = new List<Vector3>();
         protected override void OnUpdate(int index, Entity entity, LocalToWorld localToWorld, Velocity velocity, MoveDirection move, FaceDirection face, Speed speed)
