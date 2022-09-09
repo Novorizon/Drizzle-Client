@@ -76,7 +76,8 @@ namespace Game
         {
             System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
             sw.Start();
-            var assembly = Assembly.Load("Assembly-CSharp");
+            //Assembly assembly = Assembly.GetExecutingAssembly();// Assembly.Load("Assembly-CSharp");
+            Assembly assembly = typeof(TableProxy).Assembly;
             try
             {
                 var assemblyTypes = assembly.GetTypes();
@@ -111,6 +112,7 @@ namespace Game
             if (!accessorTypes.ContainsKey(accessor.DataType))
                 accessorTypes.Add(accessor.DataType, typeof(T));
         }
+
         public void RegisterTable(Type type, AccessType accessType = AccessType.Immediately)
         {
             if (accessors == null || accessorTypes == null || accessors.ContainsKey(type))
