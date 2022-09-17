@@ -40,7 +40,7 @@ namespace Game
                 EntityManager.AddComponentData<Scale>(hero).Value = Vector3.one;
                 EntityManager.AddComponentData<CopyToTransformComponent>(hero);
 
-                EntityManager.AddComponentData<Speed>(hero).Value = 0;
+                EntityManager.AddComponentData<Speed>(hero).Value =default;
                 EntityManager.AddComponentData<MoveDirection>(hero).Value =Vector3.forward;
                 EntityManager.AddComponentData<FaceDirection>(hero).Value = Vector3.forward;
 

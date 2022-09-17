@@ -1,4 +1,5 @@
-﻿using MVC.Extensions;
+﻿using Ability;
+using MVC.Extensions;
 using MVC.UI;
 using System;
 using TMPro;
@@ -9,6 +10,7 @@ namespace Game
 {
     public class HudWindow : UIWindow
     {
+        private Button buttonAbility;
         private Button buttonTime;
         private TextMeshProUGUI textTime;
         Image imageHeadIcon;
@@ -37,6 +39,8 @@ namespace Game
 
             //taskItem.gameObject.SetActive(false);
 
+            buttonAbility = transform.Find("Root/RightBottom/Ability").GetComponent<Button>();
+            buttonAbility.onClick.AddListener(OnAbilityClick);
             InitUI();
 
             EnableUpdate(true);
@@ -135,10 +139,18 @@ namespace Game
             //taskScrollViewObj.SetActive(!taskProxy.isCloseTaskHud);
         }
 
-        private void OnTitleBtnClick()
+        private void OnAbilityClick()
         {
-            //taskProxy.isCloseTaskHud = !taskProxy.isCloseTaskHud;
-            //SetHudOpenImg();
+            Debug.LogError("Ability Cast ！！！");
+
+            AbilityProxy abilityProxy = Facade.RetrieveProxy(AbilityProxy.NAME) as AbilityProxy;
+            if (abilityProxy == null)
+                return;
+
+            AbilityVO vo = abilityProxy.HeroAbility(0);
+            vo.caster = heroProxy.Entity;
+            //vo.target = heroProxy.Entity;
+            SendNotification(GameConsts.ABILITY_CAST, abilityProxy.HeroAbility(0));
         }
     }
 

@@ -7,7 +7,7 @@ namespace Game
     public class Speed : IComponentData
     {
         public float Value;
-        //public AttributeParam Value;
+        //public Attribute Value;
         //public void AddBuff(BuffEffect type, float value)
         //{
         //    if (type == BuffEffect.Plus)

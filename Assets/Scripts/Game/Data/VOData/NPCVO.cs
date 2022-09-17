@@ -1,14 +1,13 @@
 using System.Collections.Generic;
 using Mono.Data.Sqlite;
-using ECS;
+using System;
 using UnityEngine;
 
 namespace Game
 {
-    public class HeroVO
+    public class NPCVO
     {
-        public ulong guid;
-        public Entity entity;
+        public ulong guid;                                        // 
         public int id;                                        // 
         public string name;                                     // 
         public string modelPath;                                     // 
@@ -36,16 +35,5 @@ namespace Game
 
         public bool isImmunity;
         public bool isInvincible;
-        public HeroVO()
-        {
-           
-        }
-
-
-        public HeroVO Clone()
-        {
-            HeroVO newClone = new HeroVO();
-            return newClone;
-        }
     }
 }

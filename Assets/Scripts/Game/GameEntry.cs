@@ -1,3 +1,4 @@
+using Ability;
 using ECS;
 using Game.Input;
 using MVC;
@@ -33,7 +34,6 @@ namespace Game
             Facade.RegisterCommand(LoadSceneCommand.NAME, () => new LoadSceneCommand());
 
             SendNotification(RegistMediatorCommand.Name, staticPanel, StartupMediator.NAME);
-
         }
 
         private void SceneManager_sceneLoaded(Scene arg0, LoadSceneMode arg1)
@@ -65,9 +65,6 @@ namespace Game
         protected override void OnStop()
         {
             GameInput.Disable();
-            //Facade.SendNotification(GameConsts.PERSISTENT_CLEAR_CACHE);
-
-            //Facade.RemoveMediator(StartupMediator.NAME);
 
             Facade.RemoveProxy(TableProxy.NAME);
 
@@ -83,6 +80,12 @@ namespace Game
             SendNotification(LoadHeroCommand.NAME);
         }
 
+        protected override void InitializeMediator()
+        {
+            Facade.RegisterMediator(new AbilityMediator(null));
+
+        }
+
         protected override void InitializeProxy()
         {
             Facade.RegisterProxy(new NetProxy());
@@ -94,10 +97,16 @@ namespace Game
 
             Facade.RegisterProxy(new HeroProxy());
             Facade.RegisterProxy(new QuestProxy());
+
+
+            Facade.RegisterProxy(new AbilityProxy());
+            Facade.RegisterProxy(new EffectProxy());
+
             NetProxy netProxy = Facade.RetrieveProxy(NetProxy.NAME) as NetProxy;
             netProxy.Start();
         }
 
-       
+        
+
     }
 }

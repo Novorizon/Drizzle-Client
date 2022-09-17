@@ -1,3 +1,4 @@
+
 using Cinemachine;
 using DataBase;
 using ECS;
@@ -88,11 +89,16 @@ namespace Game
                 }
             });
 
-                //SendNotification();//装备
+            //SendNotification();//装备
 
+            data.entity=hero;
+            data.guid = hero.GUID;
 
+            Entity entity = EntityManager.Create();
+            EntityManager.AddComponentData<Ability.AbilityComponent>(entity);
 
-
+            Entity buff = EntityManager.Create();
+            EntityManager.AddComponentData<Ability.BuffComponent>(buff);
         }
     }
 }

@@ -3,6 +3,7 @@ using Game.Protobuffer;
 using PureMVC.Patterns.Proxy;
 using System.Collections.Generic;
 using UnityEngine;
+using ECS;
 
 namespace Game
 {
@@ -60,7 +61,7 @@ namespace Game
 
         public void GetPrefs()
         {
-            data.UID = PlayerPrefs.GetInt("UID", 0);//
+            //data.UID = PlayerPrefs.GetInt("UID", 0);//
             data.modelId = PlayerPrefs.GetInt("ModelId", 1000);//
             data.position = PlayerPrefsX.GetVector3("Position", default);//
         }
@@ -76,6 +77,11 @@ namespace Game
 
         public HeroVO GetData() => data;
 
+        public Entity Entity => data.entity;
+        public ulong Guid => data.guid;
+        public int Health { get { return data.health; } set { data.health = value; } }
+        public bool Immunity { get { return data.isImmunity; } set { data.isImmunity = value; } }
+        public bool Invincible { get { return data.isInvincible; } set { data.isInvincible = value; } }
 
         public void SetData(DefaultData defaultData)
         {
@@ -110,6 +116,28 @@ namespace Game
         {
             PlayerPrefs.DeleteAll();
 
+        }
+
+
+
+        public void SetAttribute(Ability.Attribute attribute, float value)
+        {
+            switch (attribute)
+            {
+                case Ability.Attribute.Attack:
+                    data.attack += (int)value;
+                    break;
+                case Ability.Attribute.Defence:
+                    data.defence += (int)value;
+                    break;
+                case Ability.Attribute.Speed:
+                    data.speed += (int)value;
+                    EntityManager.GetComponentData<Speed>(data.entity).Value = data.speed;
+                    break;
+                case Ability.Attribute.Health:
+                    data.health += (int)value;
+                    break;
+            }
         }
     }
 }

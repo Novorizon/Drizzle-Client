@@ -84,7 +84,7 @@ namespace Game
                 for (int i = 0; i < assemblyTypes.Length; i++)
                 {
                     var type = assemblyTypes[i];
-                    TableAccessAttribute a = Attribute.GetCustomAttribute(assemblyTypes[i], typeof(TableAccessAttribute)) as TableAccessAttribute;
+                    TableAccessAttribute a = System.Attribute.GetCustomAttribute(assemblyTypes[i], typeof(TableAccessAttribute)) as TableAccessAttribute;
                     if (a != null)
                     {
                         RegisterTable(type, a.type);
