@@ -1,4 +1,4 @@
-using UnityEditor;
+ï»¿using UnityEditor;
 using Sirenix.OdinInspector.Editor;
 using UnityEngine.SceneManagement;
 using UnityEngine;
@@ -6,18 +6,16 @@ using System;
 using UnityEditor.SceneManagement;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
-using PureMVC.Patterns.Proxy;
-using PureMVC.Patterns.Facade;
+using System.Reflection;
+using System.Diagnostics;
+using Sirenix.OdinInspector;
 using Game;
 using DataBase;
-using System.Reflection;
-using PureMVC.Interfaces;
-using System.Linq.Expressions;
-using System.Diagnostics;
-using Mono.Data.Sqlite;
 using Database;
+using System.Linq;
+using Sirenix.Utilities.Editor;
 
-namespace NPCEditor
+namespace AbilityEditor
 {
     [AttributeUsage(AttributeTargets.All, AllowMultiple = false, Inherited = true)]
     [Conditional("UNITY_EDITOR")]
@@ -26,28 +24,23 @@ namespace NPCEditor
     }
 
     [Serializable]
-    public partial class NPCEditor : OdinEditorWindow
+    public partial class AbilityEditor : OdinEditorWindow
     {
-        public static NPCEditor Instance;
+        public static AbilityEditor Instance;
+
+
         [HideInInspector,]
         bool changed;
 
-        List<NPCData> npcs;
-
-        public static string ScenePath = "Assets/Plugins/HexMap/Editor/Scenes/";
-        public static string MapPath = "Assets/Main/Maps/";
-        public static string MapsPath = "/Main/Maps/";
-
-        string MapNameLast;
-        string MapName { get { return id + "_" + name; } }
-        string MapHexTerrainName { get { return MapName + ".asset"; } }
 
 
+        EditorMode mode = EditorMode.Settings;
 
-        [MenuItem("Tools/NPCEditor")]
+
+        [MenuItem("Tools/AbilityEditor")]
         public static void ShowWindow()
         {
-            GetWindow<NPCEditor>("NPCEditor");
+            GetWindow<AbilityEditor>("Worldç¼–è¾‘å™¨");
         }
 
 
@@ -62,19 +55,24 @@ namespace NPCEditor
 
             if (GUILayout.Button(EditorGUIUtility.IconContent("Terrain Icon", "Terrain."), GUILayout.Width(50), GUILayout.Height(30)))
             {
-                InitLIst();
                 mode = EditorMode.Settings;
                 UpdateMode();
             }
             if (GUILayout.Button(EditorGUIUtility.IconContent("Prefab Icon"), GUILayout.Width(50), GUILayout.Height(30)))
             {
-                mode = EditorMode.Property;
+                mode = EditorMode.NPC;
+
+                UpdateMode();
+            }
+            if (GUILayout.Button(EditorGUIUtility.IconContent("BuildSettings.Web.Small"), GUILayout.Width(50), GUILayout.Height(30)))
+            {
+                mode = EditorMode.Static;
 
                 UpdateMode();
             }
             if (GUILayout.Button(EditorGUIUtility.IconContent("SettingsIcon"), GUILayout.Width(50), GUILayout.Height(30)))
             {
-                mode = EditorMode.Model;
+                mode = EditorMode.Quest;
 
                 UpdateMode();
             }
@@ -82,17 +80,12 @@ namespace NPCEditor
             GUILayout.EndHorizontal();
             base.OnGUI();
 
-            if (changed)
-            {
-                //EditorApplication.delayCall += () => { ReCreate(); };
-                //ReCreate();
-                changed = false;
-            }
-
         }
 
         protected override void OnEnable()
         {
+
+
             if (Instance != null)
             {
                 Instance.Close();
@@ -100,43 +93,32 @@ namespace NPCEditor
             }
             Instance = this;
 
+
+            hasUnsavedChanges = false;
+            autoRepaintOnSceneChange = true;
+            saveChangesMessage = "Click \"Cancel\" and export data to Json. \nOr click \"Save\" or \"Discard\" to close Level Editor.";
+
             db = new SQLiteHelper();
-
-
             Facade.RegisterProxy(new TableProxy());
             Facade.RegisterProxy(new NpcProxy());
             tableProxy = Facade.RetrieveProxy(TableProxy.NAME) as TableProxy;
 
             tableProxy.RegisterTable<ModelTableAccess>();
             tableProxy.RegisterTable<NPCTableAccess>();
-            access = tableProxy.GetAccess<ModelTableAccess>();
 
 
             db.Open(path);
             tableProxy.Load();
             db.Close();
 
-            hasUnsavedChanges = false;
-            autoRepaintOnSceneChange = true;
-            saveChangesMessage = "Click \"Cancel\" and export data to Json. \nOr click \"Save\" or \"Discard\" to close Level Editor.";
-
-
-            InitLIst();
-
             EditorApplication.update += Update;
-            SceneView.duringSceneGui += OnSceneGUI;
-        }
 
+        }
 
         private void OnDisable()
         {
             EditorApplication.update -= Update;
-            //HexMapMgr.Instance.UnloadMap();
 
-            id = 0;
-            name = "";
-            GameObject.DestroyImmediate(display);
-            display=null;
 
             hasUnsavedChanges = false;
             autoRepaintOnSceneChange = false;
@@ -145,19 +127,6 @@ namespace NPCEditor
 
         private void OnSceneGUI(SceneView sceneView)
         {
-            //HandleUtility.AddDefaultControl(GUIUtility.GetControlID(FocusType.Passive));//ÎªsceneÏìÓ¦Ìí¼ÓÄ¬ÈÏÊÂ¼þ,ÓÃÀ´ÆÁ±ÎÒÔÇ°µÄµã»÷Ñ¡ÖÐÎïÌå
-            Event currentEvent = Event.current;
-
-            switch (mode)
-            {
-                case EditorMode.Property:
-                    break;
-
-                case EditorMode.Model:
-                    break;
-
-            }
-
         }
 
         private void Update()
@@ -165,5 +134,6 @@ namespace NPCEditor
             if (Instance == null)
                 return;
         }
+
     }
 }

@@ -100,7 +100,7 @@ namespace NPCEditor
 
             for (int i = 0; i < Infos.Length; i++)
             {
-                EditorModeAttribute a = Attribute.GetCustomAttribute(Infos[i], typeof(EditorModeAttribute)) as EditorModeAttribute;
+                EditorModeAttribute a = System.Attribute.GetCustomAttribute(Infos[i], typeof(EditorModeAttribute)) as EditorModeAttribute;
                 if (a != null)
                 {
                     Infos[i].SetValue(this, false);

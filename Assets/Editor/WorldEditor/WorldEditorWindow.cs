@@ -1,19 +1,13 @@
 ﻿using UnityEditor;
 using Sirenix.OdinInspector.Editor;
-using UnityEngine.SceneManagement;
 using UnityEngine;
 using System;
-using UnityEditor.SceneManagement;
-using System.Text.RegularExpressions;
 using System.Collections.Generic;
-using System.Reflection;
 using System.Diagnostics;
-using Sirenix.OdinInspector;
 using Game;
 using DataBase;
 using Database;
-using System.Linq;
-using Sirenix.Utilities.Editor;
+using Attribute = System.Attribute;
 
 namespace WorldEditor
 {

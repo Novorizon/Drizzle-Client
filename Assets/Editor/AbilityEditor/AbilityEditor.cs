@@ -19,50 +19,15 @@ using Database;
 using System.Linq;
 using Sirenix.OdinInspector;
 
-namespace WorldEditor
+namespace AbilityEditor
 {
-    public class MySelector : OdinSelector<NPCData>
-    {
-        private readonly List<NPCData> source;
-        private readonly bool supportsMultiSelect;
-
-        public MySelector(List<NPCData> source, bool supportsMultiSelect)
-        {
-            this.source = source;
-            this.supportsMultiSelect = supportsMultiSelect;
-        }
-
-        protected override void BuildSelectionTree(OdinMenuTree tree)
-        {
-            tree.Config.DrawSearchToolbar = true;
-            tree.Selection.SupportsMultiSelect = this.supportsMultiSelect;
-
-            tree.Add("Defaults/None", null);
-            tree.Add("Defaults/A", new NPCData());
-            tree.Add("Defaults/B", new NPCData());
-
-        }
-
-        [OnInspectorGUI]
-        private void DrawInfoAboutSelectedItem()
-        {
-            NPCData selected = this.GetCurrentSelection().FirstOrDefault();
-
-            if (selected != null)
-            {
-                GUILayout.Label("Name: " + selected.id);
-                GUILayout.Label("Data: " + selected.modelId);
-            }
-        }
-    }
-    public partial class WorldEditor
+    public partial class AbilityEditor
     {
         static string dbName = "Test.db";
         string path = "URI=file:" + Application.streamingAssetsPath + "/" + dbName;
         SQLiteHelper db;
 
         TableProxy tableProxy;
-        NpcProxy npcProxy;
 
         bool updated = false;
 
@@ -72,18 +37,9 @@ namespace WorldEditor
         [EditorMode] bool IsStatic = false;
         [EditorMode] bool IsQuest = false;
 
-        public void SendNotification(string notificationName, object body = null, string type = null)
-        {
-            Facade.SendNotification(notificationName, body, type);
-        }
+        public void SendNotification(string notificationName, object body = null, string type = null) => Facade.SendNotification(notificationName, body, type);
 
-        protected IFacade Facade
-        {
-            get
-            {
-                return PureMVC.Patterns.Facade.Facade.GetInstance(() => new PureMVC.Patterns.Facade.Facade());
-            }
-        }
+        protected IFacade Facade => PureMVC.Patterns.Facade.Facade.GetInstance(() => new Facade());
 
 
 
@@ -122,7 +78,7 @@ namespace WorldEditor
 
         void UpdateMode()
         {
-            Type type = typeof(WorldEditor);
+            Type type = typeof(AbilityEditor);
             FieldInfo[] Infos = type.GetFields(BindingFlags.NonPublic | BindingFlags.Instance);
 
             string Name = mode switch
@@ -149,32 +105,6 @@ namespace WorldEditor
 
         }
 
-        private void InitLIst()
-        {
-           //data= GameObject.FindObjectOfType<WorldData>();
-           // if (data == null)
-           // {
-           //     data = new WorldData();
-
-           //     GameObject root = new GameObject();
-           //     root.name = "WorldData";
-           //     //root.AddComponent<WorldData>();
-
-           // }
-           // else
-           // {
-           //     npcs = data.npcs;
-           //     statics= data.statics;
-           //     inpendentQuests = data.inpendentQuests;
-           // }
-
-
-
-          
-            mode = EditorMode.Settings;
-            UpdateMode();
-
-        }
 
 
         static bool IsNumber(string input)
