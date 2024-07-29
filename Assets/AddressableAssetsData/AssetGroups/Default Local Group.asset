@@ -17,24 +17,28 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 1a487672c33a9074c9ab83bb9a519fd5
   m_SerializeEntries:
-  - m_GUID: 770c7b20e773c7043812493859b36729
-    m_Address: db
-    m_ReadOnly: 0
-    m_SerializedLabels: []
   - m_GUID: d2809ab9b90eea7419d8d90d4c505d35
     m_Address: map_1001
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Local
   - m_GUID: 2dfbb63c9cdf7504faf4ff26b0581598
     m_Address: MaleCharacter
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Local
   - m_GUID: cc91c8ba8b9a34f4d99e70d721f60b64
     m_Address: FemaleCharacter
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Local
   - m_GUID: e233aa22251f7374b87b154358204eca
     m_Address: ui_beast_levelup_shangchengjiantou
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Local
+  - m_GUID: 03e491284a01a1d41bb1e0e1c7998117
+    m_Address: HotGameEntry
     m_ReadOnly: 0
     m_SerializedLabels: []
   m_ReadOnly: 0

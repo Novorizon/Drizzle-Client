@@ -10,26 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
-  m_Name: UI
+  m_Name: Bullet
   m_EditorClassIdentifier: 
-  m_GroupName: UI
+  m_GroupName: Packed Assets
   m_Data:
     m_SerializedData: []
-  m_GUID: 0207e1e84cc642c439a21b6828732db5
-  m_SerializeEntries:
-  - m_GUID: 663020a29f7bdc049a656b65a4a55f2e
-    m_Address: HUD
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Local
-  - m_GUID: 212d13fac45da4f4baa713c6a95c25db
-    m_Address: Dialogue
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Local
+  m_GUID: 3c1c1f6254031ca4891ebba5e8b2b768
+  m_SerializeEntries: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: a7401759e0d3b4643b63bef26b7da901, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: f761a8699e425e547a4b38dd9575d1d7, type: 2}
-    - {fileID: 11400000, guid: 6a10cd8921a67784a9c1c4a15e889d4b, type: 2}
+    - {fileID: 11400000, guid: e2f706e2486a90548b887ad23cc7c3d8, type: 2}
+    - {fileID: 11400000, guid: caa2c428e066d554dbb938413c466d80, type: 2}
