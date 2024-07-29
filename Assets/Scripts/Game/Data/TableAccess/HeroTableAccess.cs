@@ -16,7 +16,7 @@ namespace DataBase
 
         public HeroTableAccess()
         {
-            Name = "Hero";
+            Name = "hero";
             Loaded = false;
             datas = new Dictionary<int, TableData>();
         }

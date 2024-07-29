@@ -59,12 +59,12 @@ namespace Game
             }
             else if (quest.state == QuestState.Abort)
             {
-                EntityManager.DestroyEntity(entity);
+                //EntityManager.DestroyEntity(entity);
 
             }
             else if (quest.state == QuestState.Reward)
             {
-                EntityManager.DestroyEntity(entity);
+                //EntityManager.DestroyEntity(entity);
             }
         }
 

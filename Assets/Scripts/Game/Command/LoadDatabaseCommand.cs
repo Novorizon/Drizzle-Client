@@ -12,7 +12,7 @@ namespace Game
         {
             if (notification.Name!=null)
             {
-                ResourceManager.Instance.LoadAssetAsync<Object>(notification.Name, (asset, _) =>
+                ResourceManager.Instance.LoadAssetAsync<Object>(notification.Body, (asset, _) =>
                 {
                     TextAsset text= asset as TextAsset;
                     Debug.LogError(asset.name);

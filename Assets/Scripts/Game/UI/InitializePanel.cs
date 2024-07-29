@@ -182,6 +182,7 @@ namespace Game
         {
             gameObject.SetActive(false);
             initEndCallback?.Invoke();
+            //SendNotification(GameConsts.LOAD_TABLE_FINISH);
         }
     }
 }

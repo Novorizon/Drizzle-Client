@@ -8,49 +8,51 @@ using UnityEngine.SceneManagement;
 
 namespace Game
 {
-    public struct LoadSceneData
-    {
-        public string name;
-        public LoadSceneMode mode;
-        public LoadSceneData(string name, LoadSceneMode mode = LoadSceneMode.Single)
-        {
-            this.name = name;
-            this.mode = mode;
-        }
-    }
+    //public struct LoadSceneData
+    //{
+    //    public string name;
+    //    public LoadSceneMode mode;
+    //    public LoadSceneData(string name, LoadSceneMode mode = LoadSceneMode.Single)
+    //    {
+    //        this.name = name;
+    //        this.mode = mode;
+    //    }
+    //}
     public class LoadSceneCommand : SimpleCommand
     {
         public const string NAME = "LoadSceneCommand";
         public override void Execute(INotification notification)
         {
+            Debug.LogError("Time.frameCount" + Time.frameCount);
+            Debug.LogError("LoadSceneCommand");
             if (notification.Body != null)
             {
-                LoadSceneData data = (LoadSceneData)notification.Body;
-                if (data.name != null)
+                dynamic parameters = notification.Body;
+                string name = parameters.name;
+                LoadSceneMode mode = parameters.mode;
+                if (name != null)
                 {
-                    ResourceManager.Instance.LoadSceneAsync(data.name, OnSceneLoaded, data.mode, true, data);
+                    ResourceManager.Instance.LoadSceneAsync(name, OnSceneLoaded, mode, true, null);
                 }
             }
         }
 
         public void OnSceneLoaded(Scene scene, object userdata)
         {
-            if (userdata is LoadSceneData data)
-            {
+            SceneManager.SetActiveScene(scene);
 
-                //var VirtualCamera = GameObject.FindObjectOfType<CinemachineVirtualCamera>();
-                //if (VirtualCamera != null)
-                //{
-                //    var vcam = VirtualCamera.GetComponent<CinemachineVirtualCamera>();
-                //    if (vcam != null)
-                //    {
-                //        //var entity = EntityManager.Create(VirtualCamera.gameObject);
-                //        //EntityManager.Instance.AddComponentData<>(entity);
-                //    }
-                //}
-            }
+            //var VirtualCamera = GameObject.FindObjectOfType<CinemachineVirtualCamera>();
+            //if (VirtualCamera != null)
+            //{
+            //    var vcam = VirtualCamera.GetComponent<CinemachineVirtualCamera>();
+            //    if (vcam != null)
+            //    {
+            //        //var entity = EntityManager.Create(VirtualCamera.gameObject);
+            //        //EntityManager.Instance.AddComponentData<>(entity);
+            //    }
+            //}
 
-            SendNotification(GameConsts.CMD_GAME_START);
+            SendNotification(GameConsts.LOAD_SCENE_FINISH);
         }
     }
 }

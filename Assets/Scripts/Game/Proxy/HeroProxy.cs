@@ -26,7 +26,8 @@ namespace Game
             handlerProxy.RegisterHandler(typeof(S2C_PlayerInfo_Ack), HandlePlayerInfoAck);
 
             data = new HeroVO();
-            GetPrefs();
+            //GetInt can only be called from the main thread.
+            //GetPrefs();
         }
 
         public override void OnRemove()
@@ -83,6 +84,8 @@ namespace Game
         public bool Immunity { get { return data.isImmunity; } set { data.isImmunity = value; } }
         public bool Invincible { get { return data.isInvincible; } set { data.isInvincible = value; } }
 
+        public int Stage { get { return data.stage; } set { data.stage = value; } }
+
         public void SetData(DefaultData defaultData)
         {
             data.id = defaultData.id;
@@ -120,24 +123,24 @@ namespace Game
 
 
 
-        public void SetAttribute(Ability.Attribute attribute, float value)
-        {
-            switch (attribute)
-            {
-                case Ability.Attribute.Attack:
-                    data.attack += (int)value;
-                    break;
-                case Ability.Attribute.Defence:
-                    data.defence += (int)value;
-                    break;
-                case Ability.Attribute.Speed:
-                    data.speed += (int)value;
-                    EntityManager.GetComponentData<Speed>(data.entity).Value = data.speed;
-                    break;
-                case Ability.Attribute.Health:
-                    data.health += (int)value;
-                    break;
-            }
-        }
+        //public void SetAttribute(Ability.Attribute attribute, float value)
+        //{
+        //    switch (attribute)
+        //    {
+        //        case Ability.Attribute.Attack:
+        //            data.attack += (int)value;
+        //            break;
+        //        case Ability.Attribute.Defence:
+        //            data.defence += (int)value;
+        //            break;
+        //        case Ability.Attribute.Speed:
+        //            data.speed += (int)value;
+        //            EntityManager.GetComponentData<Speed>(data.entity).Value = data.speed;
+        //            break;
+        //        case Ability.Attribute.Health:
+        //            data.health += (int)value;
+        //            break;
+        //    }
+        //}
     }
 }

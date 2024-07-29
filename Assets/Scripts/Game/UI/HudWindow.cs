@@ -1,4 +1,4 @@
-﻿using Ability;
+﻿//using Ability;
 using MVC.Extensions;
 using MVC.UI;
 using System;
@@ -10,6 +10,8 @@ namespace Game
 {
     public class HudWindow : UIWindow
     {
+        private Button buttonTest;
+
         private Button buttonAbility;
         private Button buttonTime;
         private TextMeshProUGUI textTime;
@@ -25,6 +27,9 @@ namespace Game
         {
             base.OnCreate(gameObject, userdata);
             heroProxy = Facade.RetrieveProxy(HeroProxy.NAME) as HeroProxy;
+
+            buttonTest = transform.Find("Root/Button").GetComponent<Button>();
+            buttonTest.onClick.AddListener(OnTestClick);
 
             textTime = transform.Find("Root/Top/Time/Label").GetComponent<TextMeshProUGUI>();
             imageHeadIcon = transform.Find("Root/LeftTop/PlayerInfo/Head/Head/Icon").GetComponent<Image>();
@@ -143,14 +148,19 @@ namespace Game
         {
             Debug.LogError("Ability Cast ！！！");
 
-            AbilityProxy abilityProxy = Facade.RetrieveProxy(AbilityProxy.NAME) as AbilityProxy;
-            if (abilityProxy == null)
-                return;
+            //    AbilityProxy abilityProxy = Facade.RetrieveProxy(AbilityProxy.NAME) as AbilityProxy;
+            //    if (abilityProxy == null)
+            //        return;
 
-            AbilityVO vo = abilityProxy.HeroAbility(0);
-            vo.caster = heroProxy.Entity;
-            //vo.target = heroProxy.Entity;
-            SendNotification(GameConsts.ABILITY_CAST, abilityProxy.HeroAbility(0));
+            //    AbilityVO vo = abilityProxy.HeroAbility(0);
+            //    vo.caster = heroProxy.Entity;
+            //    //vo.target = heroProxy.Entity;
+            //    SendNotification(GameConsts.ABILITY_CAST, abilityProxy.HeroAbility(0));
+        }
+
+        private void OnTestClick()
+        {
+            Debug.LogError("Test ");
         }
     }
 

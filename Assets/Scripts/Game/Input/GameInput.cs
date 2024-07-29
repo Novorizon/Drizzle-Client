@@ -5,7 +5,7 @@ namespace Game.Input
 {
     public static class GameInput
     {
-        [DomainReload]
+        //[DomainReload]
         private static GameControls _ctrl;
 
         public static GameControls Controller

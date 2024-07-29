@@ -26,6 +26,8 @@ namespace Game
             HeroProxy proxy = Facade.RetrieveProxy(HeroProxy.NAME) as HeroProxy;
             if (proxy == null)
                 return;
+            proxy.GetPrefs();
+
             QuestProxy questProxy = Facade.RetrieveProxy(QuestProxy.NAME) as QuestProxy;
             if (questProxy == null)
                 return;
@@ -91,14 +93,14 @@ namespace Game
 
             //SendNotification();//×°±¸
 
-            data.entity=hero;
+            data.entity = hero;
             data.guid = hero.GUID;
 
-            Entity entity = EntityManager.Create();
-            EntityManager.AddComponentData<Ability.AbilityComponent>(entity);
+            //Entity entity = EntityManager.Create();
+            //EntityManager.AddComponentData<Ability.AbilityComponent>(entity);
 
-            Entity buff = EntityManager.Create();
-            EntityManager.AddComponentData<Ability.BuffComponent>(buff);
+            //Entity buff = EntityManager.Create();
+            //EntityManager.AddComponentData<Ability.BuffComponent>(buff);
         }
     }
 }

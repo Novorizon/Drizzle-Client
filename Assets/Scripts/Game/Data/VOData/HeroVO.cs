@@ -36,6 +36,9 @@ namespace Game
 
         public bool isImmunity;
         public bool isInvincible;
+
+        public int stage;//玩家当前关卡
+        public int maxStage;//玩家已通关最大关卡
         public HeroVO()
         {
            

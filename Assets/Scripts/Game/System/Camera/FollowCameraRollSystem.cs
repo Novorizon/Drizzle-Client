@@ -16,23 +16,23 @@ namespace Game
 
         private CinemachineBrain brain;
 
-        protected override void OnCreate()
-        {
-            base.OnCreate();
+//        protected override void OnCreate()
+//        {
+//            base.OnCreate();
 
-#if UNITY_STANDALONE_WIN || UNITY_STANDALONE_OSX || UNITY_EDITOR
-            GameInput.Controller.Default.Look.performed += OnLook;
-            GameInput.Controller.Default.Look.canceled += OnLook;
+//#if UNITY_STANDALONE_WIN || UNITY_STANDALONE_OSX || UNITY_EDITOR
+//            GameInput.Controller.Default.Look.performed += OnLook;
+//            GameInput.Controller.Default.Look.canceled += OnLook;
 
-            GameInput.Controller.Default.Press.started += OnPressed;
-            GameInput.Controller.Default.Press.canceled += OnPressed;
+//            GameInput.Controller.Default.Press.started += OnPressed;
+//            GameInput.Controller.Default.Press.canceled += OnPressed;
 
-#elif UNITY_ANDROID || UNITY_IOS
-           GameInput.Controller.Touch.FirstTouch.performed += FirstTouch_performed;
-           GameInput.Controller.Touch.SecondTouch.performed += SecondTouch_performed;
+//#elif UNITY_ANDROID || UNITY_IOS
+//           GameInput.Controller.Touch.FirstTouch.performed += FirstTouch_performed;
+//           GameInput.Controller.Touch.SecondTouch.performed += SecondTouch_performed;
 
-#endif
-        }
+//#endif
+//        }
 
 
 #if UNITY_STANDALONE_WIN || UNITY_STANDALONE_OSX || UNITY_EDITOR

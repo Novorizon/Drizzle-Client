@@ -127,7 +127,7 @@ namespace Game
         }
 
 
-        public bool Load()
+        public bool Load(Action onComplete = null)
         {
             SQLiteHelper db = new SQLiteHelper(path);
 
@@ -150,7 +150,7 @@ namespace Game
             }
             db.Close();
 
-            SendNotification(GameConsts.LOAD_DB_FINISH);
+            onComplete?.Invoke();
             return true;
         }
 

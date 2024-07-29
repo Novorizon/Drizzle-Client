@@ -18,8 +18,6 @@ namespace Game
 
         public const string RESOURCE_UPDATE = "RESOURCE_UPDATE";
 
-        private TableProxy tableProxy;
-
         private InitializePanel staticPanel;
 
         public StartupMediator(object viewComponent) : base(NAME, viewComponent)
@@ -29,20 +27,7 @@ namespace Game
         public override void OnRegister()
         {
             staticPanel = (InitializePanel)ViewComponent;
-
-            SceneManager.sceneLoaded += SceneManager_sceneLoaded;
-            //SceneManager.LoadSceneAsync(1, LoadSceneMode.Additive);
-
-            tableProxy = Facade.RetrieveProxy(TableProxy.NAME) as TableProxy;
-            SendNotification(LoadDatabaseCommand.NAME, "db");
-
-
-            AddressableProvider provider = new AddressableProvider();
-            //provider.InitializedCallback = InitializeILRuntime;
-            ResourceManager.Instance.Initialize(provider);
-
-
-            SendNotification(RegisterTableCommand.NAME);
+            SendNotification(GameConsts.StartupMediatorRegistered);
         }
 
         public override void OnRemove()
@@ -54,10 +39,9 @@ namespace Game
         {
             return new string[]
             {
-                GameConsts.REGISTER_TABLE,
-                GameConsts.LOAD_DB,
+                GameConsts.StartupMediatorRegistered,
                 GameConsts.LOAD_DB_FINISH,
-
+                GameConsts.LOAD_TABLE_FINISH,
                 GameConsts.LOAD_SCENE_FINISH,
 
                 GameConsts.CMD_GAME_START,
@@ -68,29 +52,25 @@ namespace Game
         {
             switch (notification.Name)
             {
-                case GameConsts.LOAD_DB:
-                    tableProxy.Load();
 
+                case GameConsts.StartupMediatorRegistered:
+                    //SendNotification(LoadTableCommand.NAME);
                     break;
 
-                case GameConsts.LOAD_DB_FINISH:
-                    LoadSceneData data = new LoadSceneData("map_1001", LoadSceneMode.Additive);
-                    SendNotification(LoadSceneCommand.NAME, data);
+                case GameConsts.LOAD_TABLE_FINISH:
+                    //SendNotification(LoadSceneCommand.NAME, new { name = "map_1001", mode = LoadSceneMode.Additive });
                     break;
 
                 case GameConsts.LOAD_SCENE_FINISH:
-                    break;
-                case GameConsts.CMD_GAME_START:
                     staticPanel.OnInitializedEnd();
+                    break;
+
+                case GameConsts.CMD_GAME_START:
+
                     break;
             }
         }
 
-        private void SceneManager_sceneLoaded(Scene arg0, LoadSceneMode arg1)
-        {
-            SceneManager.SetActiveScene(arg0);
-            SceneManager.sceneLoaded -= SceneManager_sceneLoaded;
-        }
 
         private void UpdateProgress(string tips, float progress)
         {

@@ -55,10 +55,15 @@ namespace Game
         public const string USER_ISLOGIN = "userIsLogin";
         public const string CC_DATA_NAME = "cc.data";
 
-        public const string REGISTER_TABLE = "REGISTER_TABLE";
+        public const string StartupMediatorRegistered = "StartupMediatorRegistered";
+
         public const string LOAD_DB = "LOAD_DB";
         public const string LOAD_DB_FINISH = "LOAD_DB_FINISH";
 
+        public const string REGISTER_TABLE = "REGISTER_TABLE";
+        public const string LOAD_TABLE_FINISH = "LOAD_TABLE_FINISH";
+
+        public const string StartupPanelEnd = "StartupPanelEnd";
 
         public const string LOAD_SCENE = "LOAD_SCENE";
         public const string LOAD_SCENE_FINISH = "LOAD_SCENE_FINISH";

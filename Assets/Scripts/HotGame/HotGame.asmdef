@@ -1,0 +1,25 @@
+{
+    "name": "HotGame",
+    "rootNamespace": "",
+    "references": [
+        "GUID:6c690082662260d449e413be4fa3fdc1",
+        "GUID:e5636c81fc1d75240b01f22412cdb32d",
+        "GUID:4307f53044263cf4b835bd812fc161a4",
+        "GUID:fb26fd08c3eabc84285224fe31860293",
+        "GUID:c78bced39dd91ca4cb3c288b436d62a5",
+        "GUID:9e24947de15b9834991c9d8411ea37cf",
+        "GUID:84651a3751eca9349aac36a66bba901b",
+        "GUID:d8b63aba1907145bea998dd612889d6b",
+        "GUID:13ba8ce62aa80c74598530029cb2d649",
+        "GUID:6055be8ebefd69e48b49212b09b47b2f"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
