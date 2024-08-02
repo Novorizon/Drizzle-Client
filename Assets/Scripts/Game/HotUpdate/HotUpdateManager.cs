@@ -51,9 +51,12 @@ namespace Game
                 return;
 
             //ECS支持
-            //TypeManager.AddComponentTypes(assembly);
+            //TypeManager.Initialize();
+            TypeManager.AddComponentTypes(assembly);
             DefaultWorldInitialization.Initialize("Default World", false);
 
+
+            ReferencePool.LoadType();
             //热更新   1 反射 2 启动脚本  。推荐2
             if (useReflection)//创建反射来加载热更新场景
             {
@@ -159,7 +162,7 @@ namespace Game
 
             // 加载 assembly 对应的 dll，会自动为它 hook。一旦 aot 泛型函数的 native 函数不存在，用解释器版本代码
             LoadImageErrorCode err = RuntimeApi.LoadMetadataForAOTAssembly(bytes, mode);
-            Debug.LogError($"LoadMetadata:{assemblyName}. mode:{mode} ret:{err}");
+            //Debug.LogError($"LoadMetadata:{assemblyName}. mode:{mode} ret:{err}");
         }
 
         private async Task LoadMetaDataAsync()

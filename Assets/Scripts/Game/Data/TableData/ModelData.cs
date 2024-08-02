@@ -10,6 +10,7 @@ namespace DataBase
         public string name;
         public string description { get; set; }
         public string path;
+        public string weaponDummyRight;
 
         private bool Updated;
 
