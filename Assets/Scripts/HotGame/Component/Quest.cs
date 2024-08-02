@@ -2,7 +2,7 @@ using DataBase;
 using ECS;
 using System.Collections.Generic;
 
-namespace Game
+namespace HotGame
 {
     public class Quest : IComponentData
     {

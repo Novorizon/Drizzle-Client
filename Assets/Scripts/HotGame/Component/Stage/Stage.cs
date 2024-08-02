@@ -3,7 +3,7 @@ using ECS;
 using System.Collections.Generic;
 using System.Data.SqlTypes;
 
-namespace Game
+namespace HotGame
 {
     public class Stage : IComponentData
     {

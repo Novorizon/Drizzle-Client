@@ -1,10 +1,11 @@
 using DataBase;
 using ECS;
+using Game;
 using PureMVC.Interfaces;
 using PureMVC.Patterns.Facade;
 using System.Collections.Generic;
 using UnityEngine;
-namespace Game
+namespace HotGame
 {
     public class StageSystem : SystemBase<Stage>
     {

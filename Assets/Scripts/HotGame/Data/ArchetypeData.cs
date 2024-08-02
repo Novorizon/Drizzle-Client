@@ -4,7 +4,7 @@ using System;
 using ECS;
 using Game;
 
-namespace DataBase
+namespace HotGame
 {
     public class ArchetypeData
     {
@@ -18,11 +18,14 @@ namespace DataBase
 
 
         static public EntityArchetype Hero = new EntityArchetype(
+            typeof(CopyInitialTransformFromGameObject),
+            typeof(CopyTransformFromGameObject),
+            typeof(CopyTransformToGameObject),
+
             typeof(LocalToWorld),
             typeof(Position),
             typeof(Rotation),
             typeof(Scale),
-            typeof(CopyTransformFromGameObject),
             typeof(Speed),
             typeof(MoveDirection),
             typeof(FaceDirection),
@@ -39,7 +42,7 @@ namespace DataBase
               typeof(Speed),
               typeof(MoveDirection),
               typeof(FaceDirection),
-              typeof(Bullet),
+              //typeof(Bullet),
               typeof(LifeTime),
               typeof(MoveDirection)
               );

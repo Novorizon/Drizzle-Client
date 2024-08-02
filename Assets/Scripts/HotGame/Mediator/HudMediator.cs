@@ -2,7 +2,7 @@
 using PureMVC.Interfaces;
 using PureMVC.Patterns.Mediator;
 
-namespace Game
+namespace HotGame
 {
     public class HudMediator : Mediator
     {

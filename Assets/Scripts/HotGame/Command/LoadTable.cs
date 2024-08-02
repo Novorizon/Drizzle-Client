@@ -1,4 +1,5 @@
 using DataBase;
+using Game;
 using MVC;
 using PureMVC.Interfaces;
 using PureMVC.Patterns.Command;
@@ -6,7 +7,7 @@ using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Game
+namespace HotGame
 {
     public class LoadTable : SimpleCommand
     {
@@ -19,6 +20,7 @@ namespace Game
             tableProxy.RegisterTable<HeroTableAccess>();
             tableProxy.RegisterTable<ModelTableAccess>();
             tableProxy.RegisterTable<DefaultTableAccess>();
+            tableProxy.RegisterTable<WeaponTableAccess>();
             sw.Stop();
             //UnityEngine.Debug.LogError("”√ ±2£∫" + sw.ElapsedMilliseconds + "");
 

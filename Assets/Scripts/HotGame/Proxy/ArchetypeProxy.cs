@@ -1,11 +1,8 @@
-using DataBase;
 using ECS;
 using PureMVC.Patterns.Proxy;
-using System;
 using System.Collections.Generic;
-using System.Reflection;
 
-namespace Game
+namespace HotGame
 {
     public class ArchetypeProxy : Proxy
     {

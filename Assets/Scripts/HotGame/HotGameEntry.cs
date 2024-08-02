@@ -17,8 +17,9 @@ using HybridCLR;
 using System.IO;
 using DataBase;
 using Unity.Mathematics;
+using Game;
 
-namespace Game
+namespace HotGame
 {
     public class HotGameEntry : MonoBehaviour, INotifier
     {
@@ -60,7 +61,7 @@ namespace Game
         //不能是异步函数
         protected void Launch()
         {
-            Debug.LogError("Launch15");
+            //Debug.LogError("Launch15");
 
             Initialize();
 
@@ -75,7 +76,7 @@ namespace Game
         public void OnLaunch()
         {
 
-            Debug.LogError("OnLaunch");
+            //Debug.LogError("OnLaunch");
 
             //编辑器可运行，匿名类型，class，ValueTuple，Tuple
             //打包正常运行，class
@@ -83,11 +84,11 @@ namespace Game
             //LoadSceneData data = new LoadSceneData("map_1001", LoadSceneMode.Additive);
             //SendNotification(LoadSceneCommand.NAME, data);
 
-            SendNotification(LoadTableCommand.NAME);
-            SendNotification(LoadHeroCommand.NAME);
+            SendNotification(LoadTable.NAME);
+            SendNotification(LoadHero.NAME);
             Quest quest=new Quest();
             quest.id = 0;
-            Debug.LogError(quest.id);
+            //Debug.LogError(quest.id);
 
             ResourceManager.Instance.LoadSceneAsync("map_1001", OnSceneLoaded, LoadSceneMode.Additive, true, null);
             UIManager.Instance.OpenWindow(UIConfig.HUD);
@@ -102,6 +103,12 @@ namespace Game
         protected void InitializeCommand()
         {
 
+            Facade.RegisterCommand(LoadTable.NAME, () => new LoadTable());
+            Facade.RegisterCommand(LoadScene.NAME, () => new LoadScene());
+
+            Facade.RegisterCommand(LoadHero.NAME, () => new LoadHero());
+            Facade.RegisterCommand(LoadWeapon.NAME, () => new LoadWeapon());
+
         }
 
         protected void InitializeMediator()
@@ -111,6 +118,7 @@ namespace Game
 
         protected void InitializeProxy()
         {
+            Facade.RegisterProxy(new ArchetypeProxy());
 
 
         }

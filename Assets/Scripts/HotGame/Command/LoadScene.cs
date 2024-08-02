@@ -1,5 +1,6 @@
 using Cinemachine;
 using ECS;
+using Game;
 using MVC;
 using PureMVC.Interfaces;
 using PureMVC.Patterns.Command;
@@ -8,7 +9,7 @@ using System.Xml.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Game
+namespace HotGame
 {
     public class LoadSceneData
     {

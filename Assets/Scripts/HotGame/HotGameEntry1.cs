@@ -1,5 +1,6 @@
 //using Ability;
 using ECS;
+using Game;
 using Game.Input;
 using MVC;
 using MVC.Patterns;
@@ -9,7 +10,7 @@ using UnityEngine;
 //using UnityEngine.AddressableAssets.ResourceLocators;
 using UnityEngine.SceneManagement;
 
-namespace Game
+namespace HotGame
 {
     public class HotGameEntry1 : ApplicationEntry
     {

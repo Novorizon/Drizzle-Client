@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
-namespace Game
+namespace HotGame
 {
     public class SpawnSystem : SystemBase<Spawn>
     {

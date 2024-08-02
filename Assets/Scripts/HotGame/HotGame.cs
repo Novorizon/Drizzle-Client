@@ -1,3 +1,4 @@
+using Game;
 using MVC;
 using MVC.Patterns;
 using PureMVC.Interfaces;
@@ -12,7 +13,7 @@ using UnityEngine.AddressableAssets.ResourceLocators;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.SceneManagement;
 
-namespace Game
+namespace HotGame
 {
     public class HotGame
     {

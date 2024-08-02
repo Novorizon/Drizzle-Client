@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace Game
+namespace HotGame
 {
     public class StageProxy : Proxy
     {

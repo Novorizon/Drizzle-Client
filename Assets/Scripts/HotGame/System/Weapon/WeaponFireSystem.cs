@@ -1,10 +1,11 @@
 using ECS;
+using Game;
 using MVC;
 using PureMVC.Interfaces;
 using PureMVC.Patterns.Facade;
 using Unity.Mathematics;
 using UnityEngine;
-namespace Game
+namespace HotGame
 {
     public class Bullet : IComponentData
     {
@@ -42,11 +43,10 @@ namespace Game
                     //Entity bullet = bullets[i];
 
                     //通过原型创建子弹
-                    GameObject gameObject = GameObjectPool.Spawn(weapon.gameObject);
+                    GameObject gameObject = GameObjectPool.Spawn(entity.gameObject);
                     Entity bullet = EntityManager.Create(gameObject, archetype);
 
                     EntityManager.GetComponentData<Translation>(bullet).Value = weapon.position;
-                    EntityManager.GetComponentData<Scale>(bullet).Value = weapon.scale;
                     EntityManager.GetComponentData<Speed>(bullet).Value = weapon.bulletSpeed;
                     EntityManager.GetComponentData<LifeTime>(bullet).Value = weapon.bulletLifeTime;
 

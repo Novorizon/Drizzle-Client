@@ -1,10 +1,11 @@
 using DataBase;
+using Game;
 using MVC;
 using PureMVC.Interfaces;
 using PureMVC.Patterns.Command;
 using UnityEngine;
 
-namespace Game
+namespace HotGame
 {
     public class LoadDefaultHeroCommand : SimpleCommand
     {

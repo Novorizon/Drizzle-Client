@@ -2,12 +2,13 @@
 using Cinemachine;
 using DataBase;
 using ECS;
+using Game;
 using MVC;
 using PureMVC.Interfaces;
 using PureMVC.Patterns.Command;
 using UnityEngine;
 
-namespace Game
+namespace HotGame
 {
     public class LoadHero : SimpleCommand
     {
@@ -55,48 +56,35 @@ namespace Game
 
             Entity hero = EntityManager.Create(archetype);
 
-            EntityManager.AddComponentData<CopyInitialTransformFromGameObject>(hero);
-            EntityManager.AddComponentData<CopyTransformToGameObject>(hero);
-            EntityManager.AddComponentData<LocalToWorld>(hero);
-            EntityManager.AddComponentData<Position>(hero).Value = data.position;
-            EntityManager.AddComponentData<Rotation>(hero).Value = Quaternion.identity;
-            EntityManager.AddComponentData<Scale>(hero).Value = Vector3.one;
+            EntityManager.GetComponentData<Position>(hero).Value = data.position;
+            EntityManager.GetComponentData<Rotation>(hero).Value = Quaternion.identity;
+            EntityManager.GetComponentData<Scale>(hero).Value = Vector3.one;
 
-            EntityManager.AddComponentData<Speed>(hero).Value = data.speed * 10;
-            EntityManager.AddComponentData<MoveDirection>(hero).Value = Vector3.zero;
-            EntityManager.AddComponentData<FaceDirection>(hero).Value = Vector3.forward;// data.forward;
+            EntityManager.GetComponentData<Speed>(hero).Value = data.speed * 10;
+            EntityManager.GetComponentData<MoveDirection>(hero).Value = Vector3.zero;
+            EntityManager.GetComponentData<FaceDirection>(hero).Value = Vector3.forward;// data.forward;
+                                                                                        //Debug.LogError(asset.name);
 
-            EntityManager.AddComponentData<PlayerController>(hero);
-            //Debug.LogError(asset.name);
-
-
-            Weapon weapon=EntityManager.AddComponentData<Weapon>(hero);
-            weapon.attack = 10;
-            weapon.angle = 60;
-            weapon.duration = 1;
-            weapon.timer = 0;
-            weapon.fire = true;
-            ResourceManager.Instance.LoadAssetAsync<GameObject>("Bullet", (asset, _) =>
-            {
-                if (asset != null)
-                {
-                    weapon.gameObject = GameObjectPool.Spawn(asset);
-                }
-            });
+           
 
             EntityManager.LoadGameObject(hero, model.name, data.position, Quaternion.identity, (e, _) =>
             {
-                //EntityManager.AddComponentData<PlayerController>(hero);
-
                 var VirtualCamera = GameObject.FindObjectOfType<CinemachineVirtualCamera>();
                 if (VirtualCamera != null)
                 {
                     VirtualCamera.Follow = e.gameObject.transform;
                     VirtualCamera.LookAt = e.gameObject.transform;
                 }
+
+                //装备武器 武器可以单独的一个entity，不需给Hero绑一个组件，如果某system的逻辑需要筛选带武器的单位，再给单位加组件
+                //GameObject dummy=GetDummy(e.gameObject);
+                GameObject dummy = e.gameObject;
+                LoadWeaponData loadWeaponData = new LoadWeaponData();
+                loadWeaponData.id = 1001;
+                loadWeaponData.dummy = dummy;
+                SendNotification(LoadWeapon.NAME, loadWeaponData);
             });
 
-            //SendNotification();//装备
 
             data.entity = hero;
             data.guid = hero.GUID;

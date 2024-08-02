@@ -1,4 +1,5 @@
 ﻿//using Ability;
+using Game;
 using MVC.Extensions;
 using MVC.UI;
 using System;
@@ -6,7 +7,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Game
+namespace HotGame
 {
     public class HudWindow : UIWindow
     {
