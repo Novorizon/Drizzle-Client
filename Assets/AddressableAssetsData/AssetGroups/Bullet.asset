@@ -12,11 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
   m_Name: Bullet
   m_EditorClassIdentifier: 
-  m_GroupName: Packed Assets
+  m_GroupName: Bullet
   m_Data:
     m_SerializedData: []
   m_GUID: 3c1c1f6254031ca4891ebba5e8b2b768
-  m_SerializeEntries: []
+  m_SerializeEntries:
+  - m_GUID: 9486a70a3060054479ca00700368ddf5
+    m_Address: Bullet
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 8636191d534a2484182983ea6d1d11c0
+    m_Address: Gun
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: a7401759e0d3b4643b63bef26b7da901, type: 2}
   m_SchemaSet:
