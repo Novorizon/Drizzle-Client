@@ -1,17 +1,9 @@
 //using Ability;
-using ECS;
 using Game.Input;
 using MVC;
 using MVC.Patterns;
 using MVC.UI;
-using PureMVC.Patterns.Facade;
-using System;
-using System.IO;
-using System.Linq;
-using System.Reflection;
 using UnityEngine;
-using UnityEngine.AddressableAssets.ResourceLocators;
-using UnityEngine.SceneManagement;
 
 namespace Game
 {
@@ -88,7 +80,7 @@ namespace Game
             Facade.RegisterCommand(LoadTableCommand.NAME, () => new LoadTableCommand());
             Facade.RegisterCommand(LoadSceneCommand.NAME, () => new LoadSceneCommand());
 
-            Facade.RegisterCommand(LoadHeroCommand.NAME, () => new LoadHeroCommand());
+            //Facade.RegisterCommand(LoadHeroCommand.NAME, () => new LoadHeroCommand());
 
         }
 
@@ -110,8 +102,6 @@ namespace Game
             Facade.RegisterProxy(new MessageProxy());
             Facade.RegisterProxy(new AuthProxy());
 
-            Facade.RegisterProxy(new HeroProxy());
-            Facade.RegisterProxy(new QuestProxy());
 
 
             //Facade.RegisterProxy(new AbilityProxy());

@@ -4,7 +4,6 @@ using Game;
 using MVC;
 using PureMVC.Interfaces;
 using PureMVC.Patterns.Command;
-using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -38,27 +37,48 @@ namespace HotGame
             if (weaponData == null)
                 return;
 
-            Entity entity = EntityManager.Create();
 
-            Weapon weapon = EntityManager.AddComponentData<Weapon>(entity);
+            Weapon weapon = new Weapon();
             weapon.id = weaponData.id;
             weapon.trackCount = weaponData.trackCount;
             weapon.id = weaponData.id;
             weapon.id = weaponData.id;
 
-            Spawn spawn = EntityManager.AddComponentData<Spawn>(entity);
+            Spawn spawn = new Spawn();
             spawn.interval = weaponData.interval;
-            spawn.duration =-1;
-            spawn.state =  SpawnState.Start;
+            spawn.duration = -1;
+            spawn.state = SpawnState.Start;
 
-            ResourceManager.Instance.LoadAssetAsync<GameObject>(weaponData.asset, OnLoaded, data.dummy);
+            ResourceManager.Instance.LoadAssetAsync<GameObject>(weaponData.asset, (asset, _) =>
+            {
+
+                GameObject gameObject = GameObject.Instantiate(asset);
+                gameObject.transform.parent = dummy.transform;
+                Entity entity = EntityManager.Create(gameObject);
+
+                //×Óµ¯
+                ResourceManager.Instance.LoadAssetAsync<GameObject>(weaponData.bulletAsset, (asset, _) =>
+                {
+                    GameObject bullet = GameObjectPool.Spawn(asset);
+
+                    WeaponVO weaponVO = new WeaponVO();
+                    weaponVO.id = weapon.id;
+                    weaponVO.bullet = bullet;
+                    WeaponProxy weaponProxy = Facade.RetrieveProxy(WeaponProxy.NAME) as WeaponProxy;
+                    weaponProxy.SetData(weaponVO);
+
+                    EntityManager.AddComponentData(entity, weapon);
+                    EntityManager.AddComponentData(entity, spawn);
+                });
+            });
+
         }
-
         private void OnLoaded(GameObject asset, object userdata)
         {
-            GameObject dummy = userdata as GameObject;
-            asset.transform.parent = dummy.transform;
-            //SendNotification(GameConsts.LOAD_TABLE_FINISH);
+
+            dynamic parameters = userdata;
+            GameObject dummy = parameters.data.dummy;
+            WeaponData weaponData = parameters.weaponData;
         }
     }
 }

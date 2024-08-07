@@ -35,16 +35,18 @@ namespace HotGame
         static public EntityArchetype Bullet = new EntityArchetype
               (
               typeof(LocalToWorld),
+              //typeof(Translation),
               typeof(Position),
               typeof(Rotation),
               typeof(Scale),
-              typeof(CopyTransformFromGameObject),
+            typeof(CopyInitialTransformFromGameObject),
+            typeof(CopyTransformFromGameObject),
+            typeof(CopyTransformToGameObject),
               typeof(Speed),
               typeof(MoveDirection),
               typeof(FaceDirection),
               //typeof(Bullet),
-              typeof(LifeTime),
-              typeof(MoveDirection)
+              typeof(LifeTime)
               );
     }
 }

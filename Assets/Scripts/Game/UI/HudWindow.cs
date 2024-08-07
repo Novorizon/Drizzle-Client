@@ -19,14 +19,12 @@ namespace Game
         //private GameObject taskOpenImg, taskCloseImg, taskScrollViewObj, taskItem;
         //private UILoopScrollRect taskItemScrollView;
 
-        private HeroProxy heroProxy;
 
         //private Dictionary<GameObject, TaskHudItemComponent> taskItemComs = new Dictionary<GameObject, TaskHudItemComponent>();
 
         protected override void OnCreate(GameObject gameObject, object userdata)
         {
             base.OnCreate(gameObject, userdata);
-            heroProxy = Facade.RetrieveProxy(HeroProxy.NAME) as HeroProxy;
 
             buttonTest = transform.Find("Root/Button").GetComponent<Button>();
             buttonTest.onClick.AddListener(OnTestClick);

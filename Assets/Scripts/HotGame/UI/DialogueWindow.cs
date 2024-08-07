@@ -16,10 +16,12 @@ namespace Game
         private TextMeshProUGUI textSpeaker;
         private Image imageSpeaker;
 
+        private HeroProxy heroProxy;
 
         protected override void OnCreate(GameObject gameObject, object userdata)
         {
             base.OnCreate(gameObject, userdata);
+            heroProxy = Facade.RetrieveProxy(HeroProxy.NAME) as HeroProxy;
 
             textSpeaker = transform.Find("Panel/Bottom/DialogueBox/Character/Name").GetComponent<TextMeshProUGUI>();
             imageSpeaker = transform.Find("Panel/Bottom/DialogueBox/Character/Avatar").GetComponent<Image>();

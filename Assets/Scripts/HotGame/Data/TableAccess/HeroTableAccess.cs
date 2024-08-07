@@ -9,7 +9,7 @@ namespace DataBase
     public class HeroTableAccess : TableAccess
     {
         Dictionary<int, TableData> datas;
-        public override Type DataType => typeof(NPCData);
+        public override Type DataType => typeof(HeroData);
 
         public Dictionary<int, TableData> GetDatas() => datas;
   

@@ -38,36 +38,38 @@ namespace HotGame
                 //通过原型创建子弹
                 //EntityManager.Create(archetype, weapon.trackCount, out Entity[] bullets);
 
+                WeaponProxy weaponProxy = Facade.RetrieveProxy(WeaponProxy.NAME) as WeaponProxy;
+                WeaponVO weaponVO =      weaponProxy.GetData(weapon.id);
                 for (int i = 0; i < weapon.trackCount; i++)
                 {
                     //Entity bullet = bullets[i];
 
-                    //通过原型创建子弹
-                    GameObject gameObject = GameObjectPool.Spawn(entity.gameObject);
+                    GameObject gameObject = GameObjectPool.Spawn(weaponVO.bullet);
                     Entity bullet = EntityManager.Create(gameObject, archetype);
 
-                    EntityManager.GetComponentData<Translation>(bullet).Value = weapon.position;
+                    EntityManager.GetComponentData<Position>(bullet).Value = weapon.position;
+                    EntityManager.GetComponentData<Rotation>(bullet).Value = quaternion.identity;
+                    EntityManager.GetComponentData<Scale>(bullet).Value = new float3(1);
                     EntityManager.GetComponentData<Speed>(bullet).Value = weapon.bulletSpeed;
                     EntityManager.GetComponentData<LifeTime>(bullet).Value = weapon.bulletLifeTime;
 
                     float currentAngle = startAngle + i * deltaAngle;
                     quaternion rotation = math.mul(weapon.rotation, quaternion.RotateY(math.radians(currentAngle)));
-                    EntityManager.GetComponentData<Rotation>(bullet).Value = rotation;
+                    //EntityManager.GetComponentData<Rotation>(bullet).Value = rotation;
 
-                    float3 forward = new float3(0, 0, 1);
-                    float3 direction = math.mul(rotation, forward);
-                    EntityManager.GetComponentData<MoveDirection>(bullet).Value = direction;
+                    //float3 forward = new float3(0, 0, 1);
+                    //float3 direction = math.mul(rotation, forward);
+                    //EntityManager.GetComponentData<MoveDirection>(bullet).Value = direction;
 
                     //碰撞检测
                     //EntityManager.AddComponentData(bullet, new Sphere() { Center = float3.zero, Radius = 0.1f });
                     //EntityManager.AddComponentData(bullet, new CollideEffect() { effectId = weapon.bulletEffectId, effectSpan = weapon.bulletEffectSpan });
                     //EntityManager.AddComponentData(bullet, new Damageable());
                     //EntityManager.AddComponentData(bullet, new Collide() { type = CollideType.Bullet, collidedEntity = new FixedList512<Entity>(), collidedType = new FixedList512<CollideType>() });
-                    SphereCollider collider= gameObject.GetComponent<SphereCollider>();
-                    collider.enabled = true;
-                    collider.isTrigger = true;
+                    //SphereCollider collider= gameObject.GetComponent<SphereCollider>();
+                    //collider.enabled = true;
+                    //collider.isTrigger = true;
                 }
-
             }
         }
 

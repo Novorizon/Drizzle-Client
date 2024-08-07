@@ -8,11 +8,23 @@ using UnityEngine.UI;
 
 public class ConsoleToScreen : MonoBehaviour
 {
+    static ConsoleToScreen()
+    {
+        Debug.unityLogger.logEnabled = true;
+    }
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    static void Initialize()
+    {
+        Application.logMessageReceivedThreaded += Log;
+    }
+
+
     const int maxLines = 50;
     const int maxLineLength = 120;
-    private string _logStr = "";
+    static private string _logStr = "";
 
-    private readonly List<string> _lines = new List<string>();
+    static private readonly List<string> _lines = new List<string>();
 
     public int fontSize = 15;
 
@@ -23,10 +35,10 @@ public class ConsoleToScreen : MonoBehaviour
     //    log.text = _logStr;
     //}
 
-    void OnEnable() { Application.logMessageReceivedThreaded += Log;  }
+    //void OnEnable() { Application.logMessageReceivedThreaded += Log;  }
     void OnDisable() { Application.logMessageReceivedThreaded -= Log; }
 
-    public void Log(string logString, string stackTrace, LogType type)
+    static public void Log(string logString, string stackTrace, LogType type)
     {
         // Only process Error log types
         if (type != LogType.Error)

@@ -4,6 +4,7 @@ using PureMVC.Patterns.Proxy;
 using System.Collections.Generic;
 using UnityEngine;
 using ECS;
+using HotGame;
 
 namespace Game
 {
@@ -56,7 +57,7 @@ namespace Game
             this.data.position = ack.Position.Vector3();
             this.data.forward = ack.Forward.Vector3();
 
-            SendNotification(LoadHeroCommand.NAME);
+            SendNotification(LoadHero.NAME);
 
         }
 

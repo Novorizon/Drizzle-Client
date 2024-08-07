@@ -15,8 +15,8 @@ namespace Game
     public class HotUpdateManager : SingletonBehaviour<HotUpdateManager>
     {
         private static readonly bool useReflection = false;
-        #region 反射需要用到的变量
         private const string hotAssemblyName = "HotGame";
+        #region 反射需要用到的变量
         private const string hotClassName = "Game.HotGame";
 
         private static readonly Dictionary<int, Type> types = new Dictionary<int, Type>();
@@ -38,7 +38,7 @@ namespace Game
         {
             //目前体量来说，加载元数据和热更程序集，使用异步并不比同步性能更好。如果热更程序集更多体积更大，可使用异步
             Task taskLoadMeta = LoadMetaDataAsync();
-            Task<Assembly> loadAssembly= GetAssembly(hotAssemblyName);
+            Task<Assembly> loadAssembly = GetAssembly(hotAssemblyName);
 
             //与异步过程没有时序问题的同步过程，可以在此处
 
@@ -50,13 +50,16 @@ namespace Game
             if (assembly == null)
                 return;
 
+            //Debug.LogError("Game " + assembly.CodeBase);
+
             //ECS支持
+            WorldManager.RefreshDefaultWorld(assembly);
             //TypeManager.Initialize();
-            TypeManager.AddComponentTypes(assembly);
-            DefaultWorldInitialization.Initialize("Default World", false);
+            //ReferencePool.LoadType(assembly);
+            //TypeManager.AddComponentTypes(assembly);
+            //DefaultWorldInitialization.AddSystems(assembly);
 
 
-            ReferencePool.LoadType();
             //热更新   1 反射 2 启动脚本  。推荐2
             if (useReflection)//创建反射来加载热更新场景
             {
@@ -75,7 +78,7 @@ namespace Game
                 QuitHot = (Action)quitDelegate.Invoke(null, null);
             }
             else
-            {                
+            {
                 ResourceManager.Instance.LoadAssetAsync<GameObject>("HotGameEntry", (asset, _) =>
                 {
                     GameObject.Instantiate(asset);
@@ -117,19 +120,18 @@ namespace Game
         {
         }
 
-
+        //热更新程序集一定要和aot一样，编辑器是ScriptAssemblies，运行时streamingAssets
         public async Task<Assembly> GetAssembly(string assemblyName)
         {
+#if UNITY_EDITOR
+            await Task.CompletedTask;
+            Assembly assembly = System.AppDomain.CurrentDomain.GetAssemblies().First(a => a.GetName().Name == assemblyName);
+#else
+            //Assembly assembly = Assembly.Load(File.ReadAllBytes($"{Application.streamingAssetsPath}/" + assemblyName + ".dll.bytes"));
             byte[] bytes = await ResourceManager.Instance.GetStreamingAssets(assemblyName + ".dll.bytes");
             Assembly assembly = Assembly.Load(bytes);
+#endif
             return assembly;
-
-            //#if !UNITY_EDITOR
-            //            Assembly assembly = Assembly.Load(File.ReadAllBytes($"{Application.streamingAssetsPath}/" + assemblyName + ".dll.bytes"));
-            //#else
-            //            Assembly assembly = System.AppDomain.CurrentDomain.GetAssemblies().First(a => a.GetName().Name == assemblyName);
-            //#endif
-            //            return assembly;
         }
 
 

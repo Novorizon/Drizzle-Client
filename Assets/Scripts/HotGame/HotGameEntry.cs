@@ -75,7 +75,12 @@ namespace HotGame
 
         public void OnLaunch()
         {
+            Assembly assembly = Assembly.GetExecutingAssembly();
 
+            // 打印当前程序集的全名
+            //Console.WriteLine(assembly.FullName);
+            //Debug.LogError("HotGame " + assembly.CodeBase);
+            //Debug.LogError("HotGame " + assembly.Location);
             //Debug.LogError("OnLaunch");
 
             //编辑器可运行，匿名类型，class，ValueTuple，Tuple
@@ -118,8 +123,11 @@ namespace HotGame
 
         protected void InitializeProxy()
         {
+            Facade.RegisterProxy(new HeroProxy());
             Facade.RegisterProxy(new ArchetypeProxy());
 
+            Facade.RegisterProxy(new QuestProxy());
+            Facade.RegisterProxy(new WeaponProxy());
 
         }
 

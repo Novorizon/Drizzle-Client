@@ -16,9 +16,9 @@ namespace Game
             Stopwatch sw = new Stopwatch();
             sw.Start();
             TableProxy tableProxy = Facade.RetrieveProxy(TableProxy.NAME) as TableProxy;
-            tableProxy.RegisterTable<HeroTableAccess>();
-            tableProxy.RegisterTable<ModelTableAccess>();
-            tableProxy.RegisterTable<DefaultTableAccess>();
+            //tableProxy.RegisterTable<HeroTableAccess>();
+            //tableProxy.RegisterTable<ModelTableAccess>();
+            //tableProxy.RegisterTable<DefaultTableAccess>();
             sw.Stop();
             //UnityEngine.Debug.LogError("”√ ±2£∫" + sw.ElapsedMilliseconds + "");
 
