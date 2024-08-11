@@ -53,7 +53,7 @@ namespace Game
             //Debug.LogError("Game " + assembly.CodeBase);
 
             //ECSÖ§³Ö
-            WorldManager.RefreshDefaultWorld(assembly);
+            World.RefreshDefaultWorld(assembly);
             //TypeManager.Initialize();
             //ReferencePool.LoadType(assembly);
             //TypeManager.AddComponentTypes(assembly);

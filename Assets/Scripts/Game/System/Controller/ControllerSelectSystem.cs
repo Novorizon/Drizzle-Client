@@ -30,7 +30,7 @@ namespace Game
             }
             else
             {
-                GameInput.Controller.Default.Press.started -= PressStart;
+                GameInput.Controller.Default.Press.started += PressStart;
                 GameInput.Controller.Default.Press.canceled += PressCancel;
             }
         }

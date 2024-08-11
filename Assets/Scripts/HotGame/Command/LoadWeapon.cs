@@ -54,6 +54,7 @@ namespace HotGame
 
                 GameObject gameObject = GameObject.Instantiate(asset);
                 gameObject.transform.parent = dummy.transform;
+                gameObject.transform.localPosition = default;
                 Entity entity = EntityManager.Create(gameObject);
 
                 //×Óµ¯

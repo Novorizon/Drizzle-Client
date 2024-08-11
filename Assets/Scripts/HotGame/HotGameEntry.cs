@@ -75,13 +75,9 @@ namespace HotGame
 
         public void OnLaunch()
         {
-            Assembly assembly = Assembly.GetExecutingAssembly();
-
-            // 打印当前程序集的全名
+            //Assembly assembly = Assembly.GetExecutingAssembly();
             //Console.WriteLine(assembly.FullName);
             //Debug.LogError("HotGame " + assembly.CodeBase);
-            //Debug.LogError("HotGame " + assembly.Location);
-            //Debug.LogError("OnLaunch");
 
             //编辑器可运行，匿名类型，class，ValueTuple，Tuple
             //打包正常运行，class
@@ -91,9 +87,6 @@ namespace HotGame
 
             SendNotification(LoadTable.NAME);
             SendNotification(LoadHero.NAME);
-            Quest quest=new Quest();
-            quest.id = 0;
-            //Debug.LogError(quest.id);
 
             ResourceManager.Instance.LoadSceneAsync("map_1001", OnSceneLoaded, LoadSceneMode.Additive, true, null);
             UIManager.Instance.OpenWindow(UIConfig.HUD);

@@ -56,8 +56,8 @@ namespace Game
             }
             else
             {
-                //测试 HybridCLR热更
-                HotUpdateManager.Instance.Initialize();//使用热更管理器，两种途径，1直接创建Prefab来执行Entry脚本，2反射和委托（不要对update使用invoke）
+                //HybridCLR热更
+                HotUpdateManager.Instance.Initialize();
             }
 
 
