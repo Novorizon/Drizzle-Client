@@ -8,7 +8,9 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
+using UnityEditor.VersionControl;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Game
 {
@@ -43,7 +45,6 @@ namespace Game
             //与异步过程没有时序问题的同步过程，可以在此处
 
             await Task.WhenAll(taskLoadMeta, loadAssembly);
-
 
             //assembly = await GetAssembly(hotAssemblyName);
             assembly = loadAssembly.Result;
@@ -83,6 +84,12 @@ namespace Game
                 {
                     GameObject.Instantiate(asset);
                 });
+
+                bool isSuccess = await ResourceManager.Instance.LoadAssetAsync<GameObject>("HotGameEntry");
+                if(isSuccess)
+                {
+                    GameObject.Instantiate(asset);
+                }
             }
 
 
