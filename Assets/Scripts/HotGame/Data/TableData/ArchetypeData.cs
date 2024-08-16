@@ -48,5 +48,20 @@ namespace HotGame
               //typeof(Bullet),
               typeof(LifeTime)
               );
+
+        static public EntityArchetype NPC = new EntityArchetype(
+            typeof(CopyInitialTransformFromGameObject),
+            typeof(CopyTransformFromGameObject),
+            typeof(CopyTransformToGameObject),
+
+            typeof(LocalToWorld),
+            typeof(Position),
+            typeof(Rotation),
+            typeof(Scale),
+            typeof(Speed),
+            typeof(MoveDirection),
+            typeof(FaceDirection),
+            typeof(NPC)
+            );
     }
 }

@@ -3,7 +3,7 @@ using Mono.Data.Sqlite;
 using ECS;
 using UnityEngine;
 
-namespace Game
+namespace HotGame
 {
     public class HeroVO
     {

@@ -1,4 +1,5 @@
-﻿using MVC.Extensions;
+﻿using HotGame;
+using MVC.Extensions;
 using MVC.UI;
 using TMPro;
 using UnityEngine;
@@ -8,7 +9,7 @@ namespace Game
 {
     public class QuestWindow : UIWindow
     {
-        private Button buttonContinue;
+        private Button buttonStart;
         private Button buttonSkip;
         private Button buttonConfirm;
         private Button buttonRefuse;
@@ -28,6 +29,7 @@ namespace Game
             imageSpeaker.LoadSprite("ui_beast_levelup_shangchengjiantou");
 
 
+            buttonStart.onClick.AddListener(Start);
             EnableUpdate(true);
         }
 
@@ -52,5 +54,9 @@ namespace Game
         {
         }
 
+        public void Start()
+        {
+            SendNotification(LoadStage.NAME);
+        }
     }
 }

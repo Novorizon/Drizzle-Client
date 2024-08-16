@@ -77,6 +77,7 @@ namespace HotGame
                 Vector3 worldPosition = MainCamera.camera.ScreenToWorldPoint(screenPosition);
 
                 // 执行建造操作
+                Build(worldPosition);
                 //Instantiate(buildingPrefab, worldPosition, Quaternion.identity);
                 Debug.Log("建造建筑物在位置: " + worldPosition);
 
@@ -102,7 +103,7 @@ namespace HotGame
             BuildingData buildingData = tableProxy.GetData<BuildingData>(data.id);
 
 
-            if (buildData == null)
+            if (buildingData == null)
                 return;
 
 
@@ -115,6 +116,11 @@ namespace HotGame
                 loadWeaponData.id = 1001;
                 loadWeaponData.dummy = dummy;
 
+
+                //更新地图信息
+                //更新流场寻路
+
+                //加载武器
                 SendNotification(LoadWeapon.NAME, loadWeaponData);
             });
         }

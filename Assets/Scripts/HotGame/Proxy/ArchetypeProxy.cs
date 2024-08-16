@@ -16,14 +16,16 @@ namespace HotGame
         public enum Archetype
         {
             Hero ,
-            Bullet ,
+            Bullet,
+            NPC,
         }
         public override void OnRegister()
         {
             datas = new Dictionary<Archetype, EntityArchetype>
             {
                 { Archetype.Hero, ArchetypeData.Hero },
-                { Archetype.Bullet, ArchetypeData.Bullet }
+                { Archetype.Bullet, ArchetypeData.Bullet },
+                { Archetype.NPC, ArchetypeData.NPC }
             };
         }
 

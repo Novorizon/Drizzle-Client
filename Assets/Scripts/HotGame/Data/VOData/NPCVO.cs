@@ -3,9 +3,9 @@ using Mono.Data.Sqlite;
 using System;
 using UnityEngine;
 
-namespace Game
+namespace HotGame
 {
-    public class NPCVO
+    public class NpcVO
     {
         public ulong guid;                                        // 
         public int id;                                        // 
@@ -35,5 +35,6 @@ namespace Game
 
         public bool isImmunity;
         public bool isInvincible;
+        public GameObject asset;
     }
 }

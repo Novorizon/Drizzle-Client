@@ -12,18 +12,14 @@ namespace HotGame
 
         public new static string NAME = typeof(StageProxy).FullName;
 
-        Dictionary<int, StageData> datas;
+        Dictionary<int, StageVO> datas;
 
         public StageProxy() : base(NAME) { }
 
-        public enum Archetype
-        {
-            Hero ,
-            Bullet ,
-        }
+
         public override void OnRegister()
         {
-            datas = new Dictionary<int, StageData>();
+            datas = new Dictionary<int, StageVO>();
           
         }
 
@@ -34,17 +30,31 @@ namespace HotGame
 
 
 
-        public StageData GetData(int id)
+        public StageVO GetData(int id)
         {
-            datas.TryGetValue(id, out StageData data);
+            datas.TryGetValue(id, out StageVO data);
             return data;
         }
 
 
-        public void SetData(EntityArchetype data)
-        {
+        public void SetData(StageVO data) => datas[data.id] = data;
 
+        public void UpdateState(int id,StageState state)
+        {
+            StageVO data = GetData(id);
+            if (data == null)
+                return;
+
+            data.state = state;
         }
 
+        public StageState GetState(int id)
+        {
+            StageVO data = GetData(id);
+            if (data == null)
+                return StageState.None;
+
+            return data.state;
+        }
     }
 }

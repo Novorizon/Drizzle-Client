@@ -21,6 +21,7 @@ namespace DataBase
         public string description { get; set; }
         public int level;
         public NPCType type;
+        public int weaponId;
 
         private bool Updated;
 

@@ -6,7 +6,7 @@ using Database;
 namespace DataBase
 {
     [TableAccess]
-    public class NPCTableAccess : TableAccess
+    public class NpcTableAccess : TableAccess
     {
         Dictionary<int, NPCData> datas;
         public override Type DataType => typeof(NPCData);
@@ -14,7 +14,7 @@ namespace DataBase
         public Dictionary<int, NPCData> GetDatas() => datas;
 
 
-        public NPCTableAccess()
+        public NpcTableAccess()
         {
             Name = "NPC";
             Loaded = false;

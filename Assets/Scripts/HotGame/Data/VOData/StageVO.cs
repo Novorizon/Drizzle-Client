@@ -4,13 +4,13 @@ using System;
 using ECS;
 using Game;
 
-namespace DataBase
+namespace HotGame
 {
-    public class StageData : TableData
+    public class StageVO
     {
         private bool Updated;
 
-        public StageData()
+        public StageVO()
         {
             Updated = false;
         }
@@ -20,13 +20,9 @@ namespace DataBase
         public int id;//µ±Ç°Stage id
         public string name;
         public string description;
-        public int mapId;//
-        public string mapName;//
         public List<int> npcs;
 
 
-        public float interval;
-        public float duration;
-        public int delay;//ms
+        public StageState state;
     }
 }
