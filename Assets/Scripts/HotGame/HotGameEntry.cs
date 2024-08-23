@@ -1,22 +1,10 @@
 using MVC;
-using MVC.Patterns;
 using PureMVC.Interfaces;
 using PureMVC.Patterns.Facade;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
-using UnityEngine.AddressableAssets.ResourceLocators;
-using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine;
-using Game.Input;
 using MVC.UI;
 using UnityEngine.SceneManagement;
-using HybridCLR;
-using System.IO;
-using DataBase;
-using Unity.Mathematics;
 using Game;
 
 namespace HotGame
@@ -73,7 +61,7 @@ namespace HotGame
             OnLaunch();
         }
 
-        public void OnLaunch()
+        public async void OnLaunch()
         {
             //Assembly assembly = Assembly.GetExecutingAssembly();
             //Console.WriteLine(assembly.FullName);
@@ -85,11 +73,22 @@ namespace HotGame
             //LoadSceneData data = new LoadSceneData("map_1001", LoadSceneMode.Additive);
             //SendNotification(LoadSceneCommand.NAME, data);
 
-            SendNotification(LoadTable.NAME);
-            SendNotification(LoadHero.NAME);
 
-            ResourceManager.Instance.LoadSceneAsync("map_1001", OnSceneLoaded, LoadSceneMode.Additive, true, null);
-            UIManager.Instance.OpenWindow(UIConfig.HUD);
+            SendNotification(RegisterTable.NAME);
+
+            //异步读表和加载场景
+            TableProxy tableProxy = Facade.RetrieveProxy(TableProxy.NAME) as TableProxy;
+            Task loadTable = tableProxy.LoadAsync();
+            Task<Scene> loadScene = ResourceManager.Instance.LoadSceneAsync("map_1001", LoadSceneMode.Additive);
+            await Task.WhenAll(loadTable, loadScene);
+
+            if(loadTable.IsCompleted && loadScene.Result.isLoaded)
+            {
+                SendNotification(LoadHero.NAME);
+                UIManager.Instance.OpenWindow(UIConfig.HUD);
+            }
+
+            //ResourceManager.Instance.LoadSceneAsync("map_1001", OnSceneLoaded, LoadSceneMode.Additive, true, null);
         }
         protected void Initialize()
         {
@@ -100,8 +99,7 @@ namespace HotGame
 
         protected void InitializeCommand()
         {
-
-            Facade.RegisterCommand(LoadTable.NAME, () => new LoadTable());
+            Facade.RegisterCommand(RegisterTable.NAME, () => new RegisterTable());
             Facade.RegisterCommand(LoadScene.NAME, () => new LoadScene());
 
             Facade.RegisterCommand(LoadHero.NAME, () => new LoadHero());

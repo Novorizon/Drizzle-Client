@@ -72,7 +72,7 @@ namespace HotGame
 
         public static void OnLaunch()
         {
-            SendNotification(LoadTable.NAME);
+            SendNotification(RegisterTable.NAME);
             ResourceManager.Instance.LoadSceneAsync("map_1001", OnSceneLoaded, LoadSceneMode.Additive, true, null);
             //SendNotification(LoadScene.NAME, new { name = "map_1001", mode = LoadSceneMode.Additive });
             SendNotification(LoadHero.NAME);
