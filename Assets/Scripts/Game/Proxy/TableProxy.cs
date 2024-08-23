@@ -1,10 +1,15 @@
 using Database;
 using DataBase;
+using Mono.Data.Sqlite;
 using PureMVC.Patterns.Proxy;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.Common;
 using System.IO;
+using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Game
@@ -14,6 +19,7 @@ namespace Game
 
         public new static string NAME = typeof(TableProxy).FullName;
 
+        //internal SQLiteHelper db;
         private Dictionary<Type, TableAccess> accessors;
         private Dictionary<Type, Type> accessorTypes;
 
@@ -26,6 +32,7 @@ namespace Game
         public override void OnRegister()
         {
             Init();
+            //db = new SQLiteHelper(path);
             //Register();
         }
 
@@ -55,7 +62,7 @@ namespace Game
 #elif UNITY_STANDALONE_WIN
             path = Application.streamingAssetsPath + "/" + name;  
 #elif UNITY_ANDROID
-            path = Application.persistentDataPath + "/" + name;  
+            path ="URL=file:"+ Application.persistentDataPath + "/" + name;  
 #elif UNITY_IPHONE
             path = Application.persistentDataPath + "/" + name;  
 
@@ -129,9 +136,7 @@ namespace Game
 
         public bool Load(Action onComplete = null)
         {
-            SQLiteHelper db = new SQLiteHelper(path);
-
-            if (accessors == null || db == null)
+            if (accessors == null)
                 return false;
 
             foreach (TableAccess accessor in accessors.Values)
@@ -142,21 +147,34 @@ namespace Game
                 if (accessor.Type != AccessType.Immediately)
                     continue;
 
-                if (!accessor.Load(db))
-                {
-                    Debug.Log("Failed to load table:" + accessor.Name);
-                }
-
+                Load(accessor);
             }
-            db.Close();
 
             onComplete?.Invoke();
             return true;
         }
 
-        public bool Load<T>() where T : TableAccess, new()
+        public async Task<bool> LoadAsync()
         {
+            if (accessors == null)
+                return false;
 
+            foreach (TableAccess accessor in accessors.Values)
+            {
+                if (accessor == null || accessor.Loaded)
+                    continue;
+
+                if (accessor.Type != AccessType.Immediately)
+                    continue;
+
+              await  LoadAsync(accessor);
+            }
+            return true;
+        }
+
+
+        public bool Load<T>() where T : TableAccess
+        {
             if (accessors == null)
                 return false;
 
@@ -167,16 +185,66 @@ namespace Game
             if (accessor == null || accessor.Loaded)
                 return false;
 
-            SQLiteHelper db = new SQLiteHelper(path);
-            if (db == null)
+            Load(accessor);
+
+            return true;
+        }
+
+
+        public async Task<bool> LoadAsync<T>() where T : TableAccess, new()
+        {
+            if (accessors == null)
                 return false;
 
-            if (!accessor.Load(db))
+            if (!accessors.ContainsKey(typeof(T)))
+                return false;
+
+            TableAccess accessor = (T)accessors[typeof(T)];
+            if (accessor == null || accessor.Loaded)
+                return false;
+
+            return await LoadAsync(accessor);
+        }
+
+        public bool Load(TableAccess accessor)
+        {
+            using (var db = new SQLiteHelper(path))
             {
-                Debug.Log("Failed to load table:" + accessor.Name);
+                SqliteDataReader reader = db.ReadFullTable(accessor.Name);
+                if (reader == null)
+                    return false;
+
+                TableData data = null;
+
+                while (reader.Read())
+                {
+                    data = accessor.Reader(reader);
+                    accessor.SetData(data);
+                }
             }
 
-            db.Close();
+            accessor.Loaded = true;
+
+            return true;
+        }
+        public async Task<bool> LoadAsync(TableAccess accessor)
+        {
+            using (var db = new SQLiteHelper(path))
+            {
+                SqliteDataReader reader =await db.ReadFullTableAsync(accessor.Name);
+                if (reader == null)
+                    return false;
+
+                TableData data = null;
+
+                while (await reader.ReadAsync())
+                {
+                    data = accessor.Reader(reader);
+                    accessor.SetData(data);
+                }
+            }
+
+            accessor.Loaded = true;
 
             return true;
         }
@@ -189,26 +257,105 @@ namespace Game
             return (T)accessors[typeof(T)];
         }
 
+        //public T GetData<T>(int id) where T : TableData
+        //{
+        //    if (accessorTypes == null || !accessorTypes.ContainsKey(typeof(T)))
+        //        return null;
+
+        //    Type type = accessorTypes[typeof(T)];
+
+        //    if (accessors == null || !accessors.ContainsKey(type))
+        //        return null;
+
+        //    TableAccess accessor = accessors[type];
+
+        //    if (accessor != null)
+        //    {
+        //        return (T)accessor.GetData(db, id);
+        //    }
+
+        //    return null;
+        //}
+
+
         public T GetData<T>(int id) where T : TableData
         {
             if (accessorTypes == null || !accessorTypes.ContainsKey(typeof(T)))
                 return null;
 
             Type type = accessorTypes[typeof(T)];
-
             if (accessors == null || !accessors.ContainsKey(type))
                 return null;
 
             TableAccess accessor = accessors[type];
+            if (accessor == null)
+                return null;
 
-            if (accessor != null)
+            T data = accessor.GetData(id) as T;
+            if (data != null)
             {
-                return (T)accessor.GetData(id);
+                return data;
             }
 
-            return null;
+            using (var db = new SQLiteHelper(path))
+            {
+                SqliteDataReader reader = db.ReadFullTable(accessor.Name);
+                if (reader == null)
+                    return null;
+
+                if (reader.Read())
+                {
+                    data = accessor.Reader(reader) as T;
+                    accessor.SetData(data);
+                }
+                reader.Close();
+            }
+            return data;
         }
 
+        public List<TableData> GetData<T>(List<int> indices) where T : TableData
+        {
+            if (accessorTypes == null || !accessorTypes.ContainsKey(typeof(T)))
+                return null;
 
+            Type type = accessorTypes[typeof(T)];
+            if (accessors == null || !accessors.ContainsKey(type))
+                return null;
+
+            TableAccess accessor = accessors[type];
+            if (accessor == null)
+                return null;
+
+            IReadOnlyDictionary<int, TableData> datas = accessor.GetDatas();
+            List<TableData> existingInDatas = indices
+                .Where(id => datas.ContainsKey(id))
+                .Select(id => datas[id])
+                .ToList();
+
+            // 获取不在 datas 中的元素的索引
+            List<int> missingInDatas = indices
+                .Where(id => !datas.ContainsKey(id))
+                .Select(id => indices.IndexOf(id))
+                .ToList();
+
+            var list = string.Join(",", missingInDatas);
+            var query = $"select * from " + accessor.Name + " where id in ({list})";
+
+            using (var db = new SQLiteHelper(path))
+            {
+                SqliteDataReader reader = db.ReadFullTable(accessor.Name);
+                if (reader == null)
+                    return existingInDatas;
+
+                while (reader.Read())
+                {
+                    TableData data = accessor.Reader(reader);
+                    accessor.SetData(data);
+                    existingInDatas.Add(data);
+                }
+                reader.Close();
+                return existingInDatas;
+            }
+        }
     }
 }

@@ -22,15 +22,6 @@ namespace Game
             sw.Stop();
             //UnityEngine.Debug.LogError("”√ ±2£∫" + sw.ElapsedMilliseconds + "");
 
-            if (tableProxy.Load())
-            {
-                //SendNotification(GameConsts.LOAD_TABLE_FINISH);
-            }
-        }
-
-        private void OnTableLoaded()
-        {
-            //SendNotification(GameConsts.LOAD_TABLE_FINISH);
         }
     }
 }

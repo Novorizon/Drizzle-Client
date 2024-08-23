@@ -3,14 +3,10 @@ using HybridCLR;
 using MVC;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-using UnityEditor.VersionControl;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace Game
 {
@@ -38,7 +34,7 @@ namespace Game
 
         public async void Initialize(System.Action callback = null)
         {
-            //目前体量来说，加载元数据和热更程序集，使用异步并不比同步性能更好。如果热更程序集更多体积更大，可使用异步
+            //元数据和热更程序集，数量少的时候，加载使用异步并不比同步性能更好。如果热更程序集更多体积更大，可使用异步
             Task taskLoadMeta = LoadMetaDataAsync();
             Task<Assembly> loadAssembly = GetAssembly(hotAssemblyName);
 
@@ -80,13 +76,23 @@ namespace Game
             }
             else
             {
-                ResourceManager.Instance.LoadAssetAsync<GameObject>("HotGameEntry", (asset, _) =>
-                {
-                    GameObject.Instantiate(asset);
-                });
+                //ResourceManager.Instance.LoadAssetAsync<GameObject>("HotGameEntry", (asset, _) =>
+                //{
+                //    if (asset)
+                //    {
+                //        GameObject.Instantiate(asset);
+                //    }
+                //});
 
-                bool isSuccess = await ResourceManager.Instance.LoadAssetAsync<GameObject>("HotGameEntry");
-                if(isSuccess)
+                //这样写后面的只能等异步执行完了才执行
+                //GameObject asset = await ResourceManager.Instance.LoadAssetAsync<GameObject>("HotGameEntry");
+
+
+                Task<GameObject> task = ResourceManager.Instance.LoadAssetAsync<GameObject>("HotGameEntry");
+                // DoSomethingElse();
+                GameObject asset = await task;
+
+                if (asset)
                 {
                     GameObject.Instantiate(asset);
                 }
